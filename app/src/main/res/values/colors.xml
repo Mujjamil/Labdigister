@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="login_screen_base">#F6FBF7</color>
+    <color name="login_header_dark">#0F2D1A</color>
+    <color name="login_brand_mint">#A2F5AD</color>
+    <color name="login_brand_mint_muted">#B4E4BA</color>
+    <color name="login_text_primary">#171D1B</color>
+    <color name="login_text_secondary">#3F493F</color>
+    <color name="login_hint">#6F7A6E</color>
+    <color name="login_border">#80BECABC</color>
+    <color name="login_divider">#4DBECABC</color>
+    <color name="login_card_border">#4DBECABC</color>
+    <color name="login_footer_text">#6F7A6E</color>
+    <color name="login_role_active_bg">#1A146A31</color>
+    <color name="login_role_active_border">#33146A31</color>
+    <color name="brand_dark">#0B3B22</color>
+    <color name="brand_green">#157A3C</color>
+    <color name="brand_green_soft">#DDF5E7</color>
+    <color name="screen_background">#F5F8F2</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_alt">#EEF2ED</color>
+    <color name="text_dark">#1C2320</color>
+    <color name="text_muted">#7C8A83</color>
+    <color name="text_hint">#A4ADA8</color>
+    <color name="header_label">#8AC19C</color>
+    <color name="login_subtitle">#A9C8B4</color>
+    <color name="border_soft">#DCE5DE</color>
+    <color name="nav_item_tint">#7DAF8D</color>
+    <color name="status_pending">#C99718</color>
+    <color name="status_pending_bg">#FFF3CF</color>
+    <color name="status_danger">#DA4D43</color>
+    <color name="status_danger_bg">#FDE3E0</color>
+    <color name="status_info">#2E7DF6</color>
+    <color name="status_info_bg">#E3EEFF</color>
+    <color name="avatar_green">#1C8A4B</color>
+</resources>

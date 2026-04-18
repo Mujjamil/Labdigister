@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:background="@drawable/bg_row_divider_top"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="10dp">
+    <TextView style="@style/TableCell" android:layout_width="0dp" android:layout_weight="1.1" android:text="May 11" />
+    <TextView style="@style/TableCell" android:layout_width="0dp" android:layout_weight="1.4" android:text="Outlet Canal" />
+    <TextView style="@style/TableCellCenter" android:layout_width="0dp" android:layout_weight="0.8" android:text="7.4" />
+    <TextView style="@style/TableCellCenter" android:layout_width="0dp" android:layout_weight="0.9" android:text="318" />
+    <TextView style="@style/TableStatusCell" android:layout_width="0dp" android:layout_weight="1.3" android:text="SYNCED" />
+</LinearLayout>

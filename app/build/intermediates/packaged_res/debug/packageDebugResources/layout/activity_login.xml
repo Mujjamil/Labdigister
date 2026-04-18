@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login_screen_base">
+
+    <View
+        android:id="@+id/top_section"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:background="@color/login_header_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/top_watermark"
+        android:layout_width="200dp"
+        android:layout_height="250dp"
+        android:adjustViewBounds="true"
+        android:alpha="0.92"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_login_watermark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_logo_badge">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_lab_drop"
+                app:tint="@color/login_brand_mint" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:textStyle="bold"
+            android:text="@string/app_name"
+            android:textColor="@color/login_brand_mint"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:letterSpacing="0.04"
+            android:text="@string/water_quality_monitor"
+            android:textAllCaps="true"
+            android:textColor="@color/login_brand_mint_muted"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/login_bottom_gradient"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:background="@drawable/bg_login_bottom_gradient"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/login_scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingTop="262dp"
+        app:layout_constraintBottom_toTopOf="@id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="520dp"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="18dp"
+                android:background="@drawable/bg_login_card_glow" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="18dp"
+                app:strokeColor="@color/login_card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="33dp"
+                    android:paddingTop="33dp"
+                    android:paddingEnd="33dp"
+                    android:paddingBottom="49dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="@string/welcome_back"
+                        android:textColor="@color/login_text_primary"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="@string/sign_in_prompt"
+                        android:textColor="@color/login_text_secondary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/LoginFieldLabel"
+                        android:layout_marginTop="30dp"
+                        android:text="@string/industry_board_name" />
+
+                    <LinearLayout style="@style/LoginInputShell">
+                        <ImageView
+                            style="@style/LoginInputIcon"
+                            android:src="@drawable/ic_briefcase_outline" />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:hint="e.g. MIDC, GIDC..."
+                            android:inputType="text"
+                            android:padding="0dp"
+                            android:textColor="@color/login_text_primary"
+                            android:textColorHint="@color/login_hint" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/LoginFieldLabel"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/username" />
+
+                    <LinearLayout style="@style/LoginInputShell">
+                        <ImageView
+                            style="@style/LoginInputIcon"
+                            android:src="@drawable/ic_user_outline" />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:inputType="textPersonName"
+                            android:padding="0dp"
+                            android:textColor="@color/login_text_primary"
+                            android:textColorHint="@color/login_hint" />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/LoginFieldLabel"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/password" />
+
+                    <LinearLayout style="@style/LoginInputShell">
+                        <ImageView
+                            style="@style/LoginInputIcon"
+                            android:src="@drawable/ic_lock_outline" />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:inputType="textPassword"
+                            android:padding="0dp"
+                            android:textColor="@color/login_text_primary"
+                            android:textColorHint="@color/login_hint" />
+                        <ImageView
+                            style="@style/LoginInputIcon"
+                            android:layout_marginStart="8dp"
+                            android:src="@drawable/ic_eye_outline" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"
+                            android:background="@color/login_divider" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/plus_jakarta_sans"
+                            android:paddingHorizontal="16dp"
+                            android:text="@string/login_as"
+                            android:textAllCaps="true"
+                            android:textColor="@color/login_hint"
+                            android:textSize="10sp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"
+                            android:background="@color/login_divider" />
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp">
+
+                        <TextView
+                            android:id="@+id/chip_operator"
+                            style="@style/LoginRoleChipActive"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:text="Industry Operator"
+                            app:layout_constraintEnd_toStartOf="@id/chip_technician"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/chip_technician"
+                            style="@style/LoginRoleChip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="8dp"
+                            android:text="Lab Technician"
+                            app:layout_constraintBaseline_toBaselineOf="@id/chip_operator"
+                            app:layout_constraintStart_toEndOf="@id/chip_operator"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/chip_admin"
+                            style="@style/LoginRoleChip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Admin"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/chip_operator" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/login_button"
+                        style="@style/Widget.LabDigitiser.LoginButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="38dp"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="@string/login" />
+
+                    <TextView
+                        android:id="@+id/go_to_signup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="18dp"
+                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:text="@string/create_account_prompt"
+                        android:textColor="@color/login_hint"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </FrameLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:text="LAB DIGITISER V1.0 • SECURE LOGIN"
+        android:textColor="@color/login_footer_text"
+        android:letterSpacing="0.1"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
