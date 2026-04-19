@@ -22,4 +22,5 @@
     <string name="create_account_button">Create Account</string>
     <string name="create_account_prompt">Don\'t have an account? Sign up</string>
     <string name="login_account_prompt">Already have an account? Login</string>
+    <string name="add_new_entry">Add New Entry</string>
 </resources>

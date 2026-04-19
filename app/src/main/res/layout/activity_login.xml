@@ -43,7 +43,7 @@
             android:background="@drawable/bg_logo_badge">
 
             <ImageView
-                android:layout_width="24dp"
+                android:layout_width="32dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_lab_drop"
@@ -65,11 +65,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/plus_jakarta_sans"
+
             android:letterSpacing="0.04"
             android:text="@string/water_quality_monitor"
             android:textAllCaps="true"
             android:textColor="@color/login_brand_mint_muted"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <View
@@ -133,6 +134,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/plus_jakarta_sans"
+                        android:textStyle="bold
+"
                         android:text="@string/welcome_back"
                         android:textColor="@color/login_text_primary"
                         android:textSize="24sp" />
@@ -149,6 +152,7 @@
                     <TextView
                         style="@style/LoginFieldLabel"
                         android:layout_marginTop="30dp"
+                        android:textStyle="bold"
                         android:text="@string/industry_board_name" />
 
                     <LinearLayout style="@style/LoginInputShell">
@@ -171,6 +175,7 @@
                     <TextView
                         style="@style/LoginFieldLabel"
                         android:layout_marginTop="24dp"
+                        android:textStyle="bold"
                         android:text="@string/username" />
 
                     <LinearLayout style="@style/LoginInputShell">
@@ -178,12 +183,14 @@
                             style="@style/LoginInputIcon"
                             android:src="@drawable/ic_user_outline" />
                         <EditText
+                            android:id="@+id/login_email"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@null"
                             android:fontFamily="@font/plus_jakarta_sans"
-                            android:inputType="textPersonName"
+                            android:hint="@string/email_hint"
+                            android:inputType="textEmailAddress"
                             android:padding="0dp"
                             android:textColor="@color/login_text_primary"
                             android:textColorHint="@color/login_hint" />
@@ -192,6 +199,7 @@
                     <TextView
                         style="@style/LoginFieldLabel"
                         android:layout_marginTop="24dp"
+                        android:textStyle="bold"
                         android:text="@string/password" />
 
                     <LinearLayout style="@style/LoginInputShell">
@@ -199,11 +207,13 @@
                             style="@style/LoginInputIcon"
                             android:src="@drawable/ic_lock_outline" />
                         <EditText
+                            android:id="@+id/login_password"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@null"
                             android:fontFamily="@font/plus_jakarta_sans"
+                            android:hint="@string/password"
                             android:inputType="textPassword"
                             android:padding="0dp"
                             android:textColor="@color/login_text_primary"

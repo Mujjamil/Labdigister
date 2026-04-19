@@ -5,7 +5,7 @@
     <color name="login_brand_mint">#A2F5AD</color>
     <color name="login_brand_mint_muted">#B4E4BA</color>
     <color name="login_text_primary">#171D1B</color>
-    <color name="login_text_secondary">#3F493F</color>
+    <color name="login_text_secondary">#000000</color>
     <color name="login_hint">#6F7A6E</color>
     <color name="login_border">#80BECABC</color>
     <color name="login_divider">#4DBECABC</color>
@@ -25,7 +25,8 @@
     <color name="header_label">#8AC19C</color>
     <color name="login_subtitle">#A9C8B4</color>
     <color name="border_soft">#DCE5DE</color>
-    <color name="nav_item_tint">#7DAF8D</color>
+    <color name="nav_item_active">#1A7A3C</color>
+    <color name="nav_item_inactive">#8EBE9E</color>
     <color name="status_pending">#C99718</color>
     <color name="status_pending_bg">#FFF3CF</color>
     <color name="status_danger">#DA4D43</color>

@@ -35,11 +35,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        binding.fabAdd.setOnClickListener(v -> {
-            binding.bottomNav.setSelectedItemId(R.id.nav_entries);
-            swap(new EntriesFragment());
-        });
-
         if (savedInstanceState == null) {
             binding.bottomNav.setSelectedItemId(R.id.nav_home);
         }

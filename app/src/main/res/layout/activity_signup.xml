@@ -153,6 +153,7 @@
                             style="@style/LoginInputIcon"
                             android:src="@drawable/ic_user_outline" />
                         <EditText
+                            android:id="@+id/signup_full_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -175,6 +176,7 @@
                             style="@style/LoginInputIcon"
                             android:src="@drawable/ic_briefcase_outline" />
                         <EditText
+                            android:id="@+id/signup_industry"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -197,6 +199,7 @@
                             style="@style/LoginInputIcon"
                             android:src="@android:drawable/ic_dialog_email" />
                         <EditText
+                            android:id="@+id/signup_email"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -219,6 +222,7 @@
                             style="@style/LoginInputIcon"
                             android:src="@drawable/ic_lock_outline" />
                         <EditText
+                            android:id="@+id/signup_password"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -245,6 +249,7 @@
                             style="@style/LoginInputIcon"
                             android:src="@drawable/ic_lock_outline" />
                         <EditText
+                            android:id="@+id/signup_confirm_password"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
