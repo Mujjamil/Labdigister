@@ -8,6 +8,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.labdigitiser.databinding.ActivityLoginBinding;
+import com.labdigitiser.network.WebsiteRepository;
+import com.labdigitiser.network.model.ApiLoginData;
+import com.labdigitiser.network.model.ApiPlant;
+import com.labdigitiser.network.model.ApiResponse;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -15,16 +21,18 @@ public class LoginActivity extends AppCompatActivity {
     public static final String EXTRA_SIGNUP_SUCCESS = "signup_success";
 
     private ActivityLoginBinding binding;
+    private WebsiteRepository websiteRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        websiteRepository = new WebsiteRepository(this);
 
         handleIncomingState();
 
-        if (FirebaseManager.isLoggedIn()) {
+        if (websiteRepository.hasActiveSession()) {
             openMain();
             return;
         }
@@ -32,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.loginButton.setOnClickListener(v -> attemptLogin());
 
         binding.goToSignup.setOnClickListener(v ->
-                startActivity(new Intent(this, SignUpActivity.class)));
+                Toast.makeText(this, "Account creation is managed from the admin panel.", Toast.LENGTH_LONG).show());
     }
 
     private void handleIncomingState() {
@@ -72,19 +80,52 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         binding.loginButton.setEnabled(false);
-        FirebaseManager.signIn(email, password, task -> {
-            binding.loginButton.setEnabled(true);
+        websiteRepository.login(email, password).enqueue(new retrofit2.Callback<ApiResponse<ApiLoginData>>() {
+            @Override
+            public void onResponse(
+                    retrofit2.Call<ApiResponse<ApiLoginData>> call,
+                    retrofit2.Response<ApiResponse<ApiLoginData>> response
+            ) {
+                binding.loginButton.setEnabled(true);
 
-            if (task.isSuccessful()) {
+                ApiResponse<ApiLoginData> body = response.body();
+                if (!response.isSuccessful() || body == null || !body.isSuccess() || body.getData() == null) {
+                    String message = body != null ? body.getReadableMessage() : "Login failed";
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                ApiLoginData loginData = body.getData();
+                if (loginData.getUser() == null || !"member".equalsIgnoreCase(loginData.getUser().getRole())) {
+                    websiteRepository.clearSession();
+                    Toast.makeText(
+                            LoginActivity.this,
+                            "This app is for member accounts only. Admin should use the website dashboard.",
+                            Toast.LENGTH_LONG
+                    ).show();
+                    return;
+                }
+
+                websiteRepository.saveAuthToken(loginData.getToken());
+                saveDefaultPlant(loginData.getPlants());
                 openMain();
-            } else {
-                Toast.makeText(
-                        this,
-                        task.getException() != null ? task.getException().getMessage() : "Login failed",
-                        Toast.LENGTH_LONG
-                ).show();
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ApiResponse<ApiLoginData>> call, Throwable t) {
+                binding.loginButton.setEnabled(true);
+                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void saveDefaultPlant(List<ApiPlant> plants) {
+        if (plants == null || plants.isEmpty()) {
+            return;
+        }
+
+        ApiPlant firstPlant = plants.get(0);
+        websiteRepository.selectPlant(String.valueOf(firstPlant.getId()), firstPlant.getPlantName());
     }
 
     private void openMain() {

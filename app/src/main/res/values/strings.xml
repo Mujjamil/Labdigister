@@ -23,4 +23,6 @@
     <string name="create_account_prompt">Don\'t have an account? Sign up</string>
     <string name="login_account_prompt">Already have an account? Login</string>
     <string name="add_new_entry">Add New Entry</string>
+    <string name="website_base_url">https://labdigitiser.nextin.space/api.php/</string>
+    <string name="api_ready_waiting_message">Android client is configured for the live Lab Digitiser API and is ready to use JWT-backed endpoints from the website backend.</string>
 </resources>

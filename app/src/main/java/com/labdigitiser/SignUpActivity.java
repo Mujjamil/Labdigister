@@ -76,16 +76,39 @@ public class SignUpActivity extends AppCompatActivity {
                 return;
             }
 
+            String organizationId = FirebaseManager.toOrganizationId(industry);
             Map<String, Object> userMap = new HashMap<>();
             userMap.put("fullName", fullName);
             userMap.put("industry", industry);
             userMap.put("email", email);
+            userMap.put("organizationId", organizationId);
+            userMap.put("role", "operator");
+            userMap.put("active", true);
             userMap.put("createdAt", System.currentTimeMillis());
 
             FirebaseManager.saveUserProfile(userMap, profileTask -> {
-                binding.createAccountButton.setEnabled(true);
+                if (!profileTask.isSuccessful()) {
+                    binding.createAccountButton.setEnabled(true);
+                    Toast.makeText(
+                            this,
+                            profileTask.getException() != null ? profileTask.getException().getMessage() : "Profile save failed",
+                            Toast.LENGTH_LONG
+                    ).show();
+                    return;
+                }
 
-                if (profileTask.isSuccessful()) {
+                FirebaseManager.ensureOrganizationProfile(organizationId, industry, orgTask -> {
+                    binding.createAccountButton.setEnabled(true);
+
+                    if (!orgTask.isSuccessful()) {
+                        Toast.makeText(
+                                this,
+                                orgTask.getException() != null ? orgTask.getException().getMessage() : "Organization setup failed",
+                                Toast.LENGTH_LONG
+                        ).show();
+                        return;
+                    }
+
                     FirebaseManager.signOut();
 
                     Intent loginIntent = new Intent(this, LoginActivity.class);
@@ -94,13 +117,7 @@ public class SignUpActivity extends AppCompatActivity {
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(loginIntent);
                     finish();
-                } else {
-                    Toast.makeText(
-                            this,
-                            profileTask.getException() != null ? profileTask.getException().getMessage() : "Profile save failed",
-                            Toast.LENGTH_LONG
-                    ).show();
-                }
+                });
             });
         });
     }
