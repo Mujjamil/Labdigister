@@ -14,12 +14,14 @@ import com.labdigitiser.network.WebsiteRepository;
 import com.labdigitiser.network.model.ApiDashboardData;
 import com.labdigitiser.network.model.ApiDashboardEntry;
 import com.labdigitiser.network.model.ApiPlant;
+import com.labdigitiser.network.model.ApiReadingDetail;
+import com.labdigitiser.network.model.ApiReadingValue;
 import com.labdigitiser.network.model.ApiResponse;
 import com.labdigitiser.network.model.ApiSessionData;
-import com.labdigitiser.network.model.ApiStats;
 import com.labdigitiser.network.model.ApiUser;
 
 import java.util.List;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
@@ -176,20 +178,38 @@ public class HomeFragment extends Fragment {
                 }
 
                 ApiDashboardData dashboardData = body.getData();
-                ApiStats stats = dashboardData.getStats();
-                if (stats != null) {
-                    metricOneLabel.setText("TOTAL RECORDS");
-                    metricOneValue.setText(String.valueOf(stats.getTotalRecords()));
-                    metricOneUnit.setText("");
-                    metricTwoLabel.setText("TODAY'S ENTRIES");
-                    metricTwoValue.setText(String.valueOf(stats.getTodayEntries()));
-                    metricTwoUnit.setText("");
-                    metricThreeLabel.setText("THIS WEEK");
-                    metricThreeValue.setText(String.valueOf(stats.getWeekEntries()));
-                    metricThreeUnit.setText("");
-                    metricFourLabel.setText("LOCATIONS");
-                    metricFourValue.setText(String.valueOf(stats.getActiveLocations()));
-                    metricFourUnit.setText("");
+                applyReadingCardDefaults(
+                        metricOneLabel,
+                        metricOneValue,
+                        metricOneUnit,
+                        metricTwoLabel,
+                        metricTwoValue,
+                        metricTwoUnit,
+                        metricThreeLabel,
+                        metricThreeValue,
+                        metricThreeUnit,
+                        metricFourLabel,
+                        metricFourValue,
+                        metricFourUnit
+                );
+
+                ApiDashboardEntry latestEntry = getEntryAt(dashboardData.getRecentEntries(), 0);
+                if (latestEntry != null) {
+                    bindLatestReadingValues(
+                            latestEntry,
+                            metricOneLabel,
+                            metricOneValue,
+                            metricOneUnit,
+                            metricTwoLabel,
+                            metricTwoValue,
+                            metricTwoUnit,
+                            metricThreeLabel,
+                            metricThreeValue,
+                            metricThreeUnit,
+                            metricFourLabel,
+                            metricFourValue,
+                            metricFourUnit
+                    );
                 }
 
                 bindRecentEntry(recentEntryOneTitle, recentEntryOneSubtitle, recentEntryOneStatus, getEntryAt(dashboardData.getRecentEntries(), 0));
@@ -201,6 +221,118 @@ public class HomeFragment extends Fragment {
             public void onFailure(retrofit2.Call<ApiResponse<ApiDashboardData>> call, Throwable t) {
             }
         });
+    }
+
+    private void bindLatestReadingValues(
+            ApiDashboardEntry latestEntry,
+            TextView metricOneLabel,
+            TextView metricOneValue,
+            TextView metricOneUnit,
+            TextView metricTwoLabel,
+            TextView metricTwoValue,
+            TextView metricTwoUnit,
+            TextView metricThreeLabel,
+            TextView metricThreeValue,
+            TextView metricThreeUnit,
+            TextView metricFourLabel,
+            TextView metricFourValue,
+            TextView metricFourUnit
+    ) {
+        websiteRepository.getReading(String.valueOf(latestEntry.getId())).enqueue(new retrofit2.Callback<ApiResponse<ApiReadingDetail>>() {
+            @Override
+            public void onResponse(
+                    retrofit2.Call<ApiResponse<ApiReadingDetail>> call,
+                    retrofit2.Response<ApiResponse<ApiReadingDetail>> response
+            ) {
+                if (!isAdded()) {
+                    return;
+                }
+
+                ApiResponse<ApiReadingDetail> body = response.body();
+                if (!response.isSuccessful() || body == null || !body.isSuccess() || body.getData() == null) {
+                    return;
+                }
+
+                ApiReadingDetail detail = body.getData();
+                bindMetricCard(metricOneLabel, metricOneValue, metricOneUnit, "PH LEVEL", findReadingValue(detail.getValues(), "PH"));
+                bindMetricCard(metricTwoLabel, metricTwoValue, metricTwoUnit, "TDS", findReadingValue(detail.getValues(), "TDS"));
+                bindMetricCard(metricThreeLabel, metricThreeValue, metricThreeUnit, "BOD", findReadingValue(detail.getValues(), "BOD"));
+                bindMetricCard(metricFourLabel, metricFourValue, metricFourUnit, "COD", findReadingValue(detail.getValues(), "COD"));
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ApiResponse<ApiReadingDetail>> call, Throwable t) {
+            }
+        });
+    }
+
+    private void applyReadingCardDefaults(
+            TextView metricOneLabel,
+            TextView metricOneValue,
+            TextView metricOneUnit,
+            TextView metricTwoLabel,
+            TextView metricTwoValue,
+            TextView metricTwoUnit,
+            TextView metricThreeLabel,
+            TextView metricThreeValue,
+            TextView metricThreeUnit,
+            TextView metricFourLabel,
+            TextView metricFourValue,
+            TextView metricFourUnit
+    ) {
+        metricOneLabel.setText("PH LEVEL");
+        metricOneValue.setText("--");
+        metricOneUnit.setText("pH");
+
+        metricTwoLabel.setText("TDS");
+        metricTwoValue.setText("--");
+        metricTwoUnit.setText("ppm");
+
+        metricThreeLabel.setText("BOD");
+        metricThreeValue.setText("--");
+        metricThreeUnit.setText("mg/L");
+
+        metricFourLabel.setText("COD");
+        metricFourValue.setText("--");
+        metricFourUnit.setText("mg/L");
+    }
+
+    private void bindMetricCard(
+            TextView label,
+            TextView value,
+            TextView unit,
+            String fallbackLabel,
+            ApiReadingValue readingValue
+    ) {
+        label.setText(fallbackLabel);
+        if (readingValue == null) {
+            value.setText("--");
+            return;
+        }
+
+        value.setText(formatReadingValue(readingValue.getValue()));
+        unit.setText(safeText(readingValue.getUnit(), unit.getText().toString()));
+    }
+
+    private ApiReadingValue findReadingValue(List<ApiReadingValue> values, String parameterName) {
+        if (values == null || parameterName == null) {
+            return null;
+        }
+
+        for (ApiReadingValue value : values) {
+            if (value.getParameterName() != null
+                    && parameterName.equalsIgnoreCase(value.getParameterName().trim())) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    private String formatReadingValue(double value) {
+        if (Math.abs(value - Math.rint(value)) < 0.0001d) {
+            return String.format(Locale.US, "%.0f", value);
+        }
+        return String.format(Locale.US, "%.1f", value);
     }
 
     private void bindRecentEntry(

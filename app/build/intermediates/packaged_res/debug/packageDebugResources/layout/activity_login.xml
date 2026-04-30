@@ -101,7 +101,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="520dp"
+                android:layout_height="420dp"
                 android:layout_gravity="top|center_horizontal"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="12dp"
@@ -134,8 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/plus_jakarta_sans"
-                        android:textStyle="bold
-"
+                        android:textStyle="bold"
                         android:text="@string/welcome_back"
                         android:textColor="@color/login_text_primary"
                         android:textSize="24sp" />
@@ -153,29 +152,6 @@
                         style="@style/LoginFieldLabel"
                         android:layout_marginTop="30dp"
                         android:textStyle="bold"
-                        android:text="@string/industry_board_name" />
-
-                    <LinearLayout style="@style/LoginInputShell">
-                        <ImageView
-                            style="@style/LoginInputIcon"
-                            android:src="@drawable/ic_briefcase_outline" />
-                        <EditText
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@null"
-                            android:fontFamily="@font/plus_jakarta_sans"
-                            android:hint="e.g. MIDC, GIDC..."
-                            android:inputType="text"
-                            android:padding="0dp"
-                            android:textColor="@color/login_text_primary"
-                            android:textColorHint="@color/login_hint" />
-                    </LinearLayout>
-
-                    <TextView
-                        style="@style/LoginFieldLabel"
-                        android:layout_marginTop="24dp"
-                        android:textStyle="bold"
                         android:text="@string/username" />
 
                     <LinearLayout style="@style/LoginInputShell">
@@ -189,7 +165,7 @@
                             android:layout_weight="1"
                             android:background="@null"
                             android:fontFamily="@font/plus_jakarta_sans"
-                            android:hint="@string/email_hint"
+                            android:hint="@string/username_hint"
                             android:inputType="textEmailAddress"
                             android:padding="0dp"
                             android:textColor="@color/login_text_primary"
@@ -224,94 +200,14 @@
                             android:src="@drawable/ic_eye_outline" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1"
-                            android:background="@color/login_divider" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/plus_jakarta_sans"
-                            android:paddingHorizontal="16dp"
-                            android:text="@string/login_as"
-                            android:textAllCaps="true"
-                            android:textColor="@color/login_hint"
-                            android:textSize="10sp" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1"
-                            android:background="@color/login_divider" />
-                    </LinearLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp">
-
-                        <TextView
-                            android:id="@+id/chip_operator"
-                            style="@style/LoginRoleChipActive"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="Industry Operator"
-                            app:layout_constraintEnd_toStartOf="@id/chip_technician"
-                            app:layout_constraintHorizontal_chainStyle="packed"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/chip_technician"
-                            style="@style/LoginRoleChip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:layout_marginStart="8dp"
-                            android:text="Lab Technician"
-                            app:layout_constraintBaseline_toBaselineOf="@id/chip_operator"
-                            app:layout_constraintStart_toEndOf="@id/chip_operator"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/chip_admin"
-                            style="@style/LoginRoleChip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Admin"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/chip_operator" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/login_button"
                         style="@style/Widget.LabDigitiser.LoginButton"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:layout_marginTop="38dp"
+                        android:layout_marginTop="34dp"
                         android:fontFamily="@font/plus_jakarta_sans"
                         android:text="@string/login" />
-
-                    <TextView
-                        android:id="@+id/go_to_signup"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="18dp"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:text="@string/create_account_prompt"
-                        android:textColor="@color/login_hint"
-                        android:textSize="12sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </FrameLayout>

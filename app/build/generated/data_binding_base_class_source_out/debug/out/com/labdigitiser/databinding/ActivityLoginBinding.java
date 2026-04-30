@@ -25,19 +25,7 @@ public final class ActivityLoginBinding implements ViewBinding {
   private final ConstraintLayout rootView;
 
   @NonNull
-  public final TextView chipAdmin;
-
-  @NonNull
-  public final TextView chipOperator;
-
-  @NonNull
-  public final TextView chipTechnician;
-
-  @NonNull
   public final TextView footer;
-
-  @NonNull
-  public final TextView goToSignup;
 
   @NonNull
   public final LinearLayout header;
@@ -63,18 +51,13 @@ public final class ActivityLoginBinding implements ViewBinding {
   @NonNull
   public final ImageView topWatermark;
 
-  private ActivityLoginBinding(@NonNull ConstraintLayout rootView, @NonNull TextView chipAdmin,
-      @NonNull TextView chipOperator, @NonNull TextView chipTechnician, @NonNull TextView footer,
-      @NonNull TextView goToSignup, @NonNull LinearLayout header, @NonNull View loginBottomGradient,
+  private ActivityLoginBinding(@NonNull ConstraintLayout rootView, @NonNull TextView footer,
+      @NonNull LinearLayout header, @NonNull View loginBottomGradient,
       @NonNull MaterialButton loginButton, @NonNull EditText loginEmail,
       @NonNull EditText loginPassword, @NonNull NestedScrollView loginScroll,
       @NonNull View topSection, @NonNull ImageView topWatermark) {
     this.rootView = rootView;
-    this.chipAdmin = chipAdmin;
-    this.chipOperator = chipOperator;
-    this.chipTechnician = chipTechnician;
     this.footer = footer;
-    this.goToSignup = goToSignup;
     this.header = header;
     this.loginBottomGradient = loginBottomGradient;
     this.loginButton = loginButton;
@@ -112,33 +95,9 @@ public final class ActivityLoginBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.chip_admin;
-      TextView chipAdmin = ViewBindings.findChildViewById(rootView, id);
-      if (chipAdmin == null) {
-        break missingId;
-      }
-
-      id = R.id.chip_operator;
-      TextView chipOperator = ViewBindings.findChildViewById(rootView, id);
-      if (chipOperator == null) {
-        break missingId;
-      }
-
-      id = R.id.chip_technician;
-      TextView chipTechnician = ViewBindings.findChildViewById(rootView, id);
-      if (chipTechnician == null) {
-        break missingId;
-      }
-
       id = R.id.footer;
       TextView footer = ViewBindings.findChildViewById(rootView, id);
       if (footer == null) {
-        break missingId;
-      }
-
-      id = R.id.go_to_signup;
-      TextView goToSignup = ViewBindings.findChildViewById(rootView, id);
-      if (goToSignup == null) {
         break missingId;
       }
 
@@ -190,9 +149,9 @@ public final class ActivityLoginBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityLoginBinding((ConstraintLayout) rootView, chipAdmin, chipOperator,
-          chipTechnician, footer, goToSignup, header, loginBottomGradient, loginButton, loginEmail,
-          loginPassword, loginScroll, topSection, topWatermark);
+      return new ActivityLoginBinding((ConstraintLayout) rootView, footer, header,
+          loginBottomGradient, loginButton, loginEmail, loginPassword, loginScroll, topSection,
+          topWatermark);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

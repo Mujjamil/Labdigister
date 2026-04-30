@@ -113,7 +113,6 @@ public class ProfileFragment extends Fragment {
     private void bindLogout(View view) {
         Button logoutButton = view.findViewById(R.id.button_logout);
         logoutButton.setOnClickListener(v -> {
-            FirebaseManager.signOut();
             if (websiteRepository != null) {
                 websiteRepository.clearSession();
             }

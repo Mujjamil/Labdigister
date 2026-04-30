@@ -17,9 +17,6 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static final String EXTRA_PREFILL_EMAIL = "prefill_email";
-    public static final String EXTRA_SIGNUP_SUCCESS = "signup_success";
-
     private ActivityLoginBinding binding;
     private WebsiteRepository websiteRepository;
 
@@ -30,45 +27,24 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         websiteRepository = new WebsiteRepository(this);
 
-        handleIncomingState();
-
         if (websiteRepository.hasActiveSession()) {
             openMain();
             return;
         }
 
         binding.loginButton.setOnClickListener(v -> attemptLogin());
-
-        binding.goToSignup.setOnClickListener(v ->
-                Toast.makeText(this, "Account creation is managed from the admin panel.", Toast.LENGTH_LONG).show());
-    }
-
-    private void handleIncomingState() {
-        Intent intent = getIntent();
-        if (intent == null) {
-            return;
-        }
-
-        String prefillEmail = intent.getStringExtra(EXTRA_PREFILL_EMAIL);
-        if (!TextUtils.isEmpty(prefillEmail)) {
-            binding.loginEmail.setText(prefillEmail);
-        }
-
-        if (intent.getBooleanExtra(EXTRA_SIGNUP_SUCCESS, false)) {
-            Toast.makeText(this, "Account created. Please log in.", Toast.LENGTH_LONG).show();
-        }
     }
 
     private void attemptLogin() {
-        String email = binding.loginEmail.getText() == null
+        String username = binding.loginEmail.getText() == null
                 ? ""
                 : binding.loginEmail.getText().toString().trim();
         String password = binding.loginPassword.getText() == null
                 ? ""
                 : binding.loginPassword.getText().toString().trim();
 
-        if (TextUtils.isEmpty(email)) {
-            binding.loginEmail.setError("Enter email");
+        if (TextUtils.isEmpty(username)) {
+            binding.loginEmail.setError("Enter username");
             binding.loginEmail.requestFocus();
             return;
         }
@@ -80,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         binding.loginButton.setEnabled(false);
-        websiteRepository.login(email, password).enqueue(new retrofit2.Callback<ApiResponse<ApiLoginData>>() {
+        websiteRepository.login(username, password).enqueue(new retrofit2.Callback<ApiResponse<ApiLoginData>>() {
             @Override
             public void onResponse(
                     retrofit2.Call<ApiResponse<ApiLoginData>> call,

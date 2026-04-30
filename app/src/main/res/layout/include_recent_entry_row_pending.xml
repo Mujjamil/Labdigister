@@ -23,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Raw Water Inlet"
+            android:textStyle="bold"
             android:textColor="@color/text_dark"
             android:textSize="16sp" />
         <TextView
@@ -42,6 +43,7 @@
         android:paddingHorizontal="12dp"
         android:paddingVertical="4dp"
         android:text="Pending"
+        android:textStyle="bold"
         android:textColor="@color/status_pending"
         android:textSize="11sp" />
 </LinearLayout>
