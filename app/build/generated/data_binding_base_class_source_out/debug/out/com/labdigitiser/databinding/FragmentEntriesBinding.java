@@ -48,12 +48,6 @@ public final class FragmentEntriesBinding implements ViewBinding {
   public final MaterialButton buttonStep4Next;
 
   @NonNull
-  public final MaterialButton buttonStep5Back;
-
-  @NonNull
-  public final MaterialButton buttonSubmitEntry;
-
-  @NonNull
   public final LinearLayout containerParameterFields;
 
   @NonNull
@@ -76,15 +70,6 @@ public final class FragmentEntriesBinding implements ViewBinding {
 
   @NonNull
   public final LinearLayout panelStep4;
-
-  @NonNull
-  public final LinearLayout panelStep5;
-
-  @NonNull
-  public final Spinner spinnerEquipment;
-
-  @NonNull
-  public final Spinner spinnerEquipmentCondition;
 
   @NonNull
   public final Spinner spinnerLocations;
@@ -121,18 +106,15 @@ public final class FragmentEntriesBinding implements ViewBinding {
       @NonNull MaterialButton buttonStep2Back, @NonNull MaterialButton buttonStep2Next,
       @NonNull MaterialButton buttonStep3Back, @NonNull MaterialButton buttonStep3Next,
       @NonNull MaterialButton buttonStep4Back, @NonNull MaterialButton buttonStep4Next,
-      @NonNull MaterialButton buttonStep5Back, @NonNull MaterialButton buttonSubmitEntry,
       @NonNull LinearLayout containerParameterFields, @NonNull EditText editEntryDate,
       @NonNull EditText editEntryNotes, @NonNull EditText editEntryTime,
       @NonNull LinearLayout panelStep1, @NonNull LinearLayout panelStep2,
       @NonNull LinearLayout panelStep3, @NonNull LinearLayout panelStep4,
-      @NonNull LinearLayout panelStep5, @NonNull Spinner spinnerEquipment,
-      @NonNull Spinner spinnerEquipmentCondition, @NonNull Spinner spinnerLocations,
-      @NonNull Spinner spinnerPlants, @NonNull TextView tvEntryHeaderSubtitle,
-      @NonNull TextView tvEntryMemberName, @NonNull TextView tvEntryParameterEmpty,
-      @NonNull TextView tvEntryShift, @NonNull TextView tvEntryStatus,
-      @NonNull TextView tvEntryStepIndicator, @NonNull TextView tvEntrySummary,
-      @NonNull TextView tvEntryZone) {
+      @NonNull Spinner spinnerLocations, @NonNull Spinner spinnerPlants,
+      @NonNull TextView tvEntryHeaderSubtitle, @NonNull TextView tvEntryMemberName,
+      @NonNull TextView tvEntryParameterEmpty, @NonNull TextView tvEntryShift,
+      @NonNull TextView tvEntryStatus, @NonNull TextView tvEntryStepIndicator,
+      @NonNull TextView tvEntrySummary, @NonNull TextView tvEntryZone) {
     this.rootView = rootView;
     this.buttonReloadEntryData = buttonReloadEntryData;
     this.buttonStep1Next = buttonStep1Next;
@@ -142,8 +124,6 @@ public final class FragmentEntriesBinding implements ViewBinding {
     this.buttonStep3Next = buttonStep3Next;
     this.buttonStep4Back = buttonStep4Back;
     this.buttonStep4Next = buttonStep4Next;
-    this.buttonStep5Back = buttonStep5Back;
-    this.buttonSubmitEntry = buttonSubmitEntry;
     this.containerParameterFields = containerParameterFields;
     this.editEntryDate = editEntryDate;
     this.editEntryNotes = editEntryNotes;
@@ -152,9 +132,6 @@ public final class FragmentEntriesBinding implements ViewBinding {
     this.panelStep2 = panelStep2;
     this.panelStep3 = panelStep3;
     this.panelStep4 = panelStep4;
-    this.panelStep5 = panelStep5;
-    this.spinnerEquipment = spinnerEquipment;
-    this.spinnerEquipmentCondition = spinnerEquipmentCondition;
     this.spinnerLocations = spinnerLocations;
     this.spinnerPlants = spinnerPlants;
     this.tvEntryHeaderSubtitle = tvEntryHeaderSubtitle;
@@ -242,18 +219,6 @@ public final class FragmentEntriesBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.button_step5_back;
-      MaterialButton buttonStep5Back = ViewBindings.findChildViewById(rootView, id);
-      if (buttonStep5Back == null) {
-        break missingId;
-      }
-
-      id = R.id.button_submit_entry;
-      MaterialButton buttonSubmitEntry = ViewBindings.findChildViewById(rootView, id);
-      if (buttonSubmitEntry == null) {
-        break missingId;
-      }
-
       id = R.id.container_parameter_fields;
       LinearLayout containerParameterFields = ViewBindings.findChildViewById(rootView, id);
       if (containerParameterFields == null) {
@@ -299,24 +264,6 @@ public final class FragmentEntriesBinding implements ViewBinding {
       id = R.id.panel_step_4;
       LinearLayout panelStep4 = ViewBindings.findChildViewById(rootView, id);
       if (panelStep4 == null) {
-        break missingId;
-      }
-
-      id = R.id.panel_step_5;
-      LinearLayout panelStep5 = ViewBindings.findChildViewById(rootView, id);
-      if (panelStep5 == null) {
-        break missingId;
-      }
-
-      id = R.id.spinner_equipment;
-      Spinner spinnerEquipment = ViewBindings.findChildViewById(rootView, id);
-      if (spinnerEquipment == null) {
-        break missingId;
-      }
-
-      id = R.id.spinner_equipment_condition;
-      Spinner spinnerEquipmentCondition = ViewBindings.findChildViewById(rootView, id);
-      if (spinnerEquipmentCondition == null) {
         break missingId;
       }
 
@@ -382,12 +329,10 @@ public final class FragmentEntriesBinding implements ViewBinding {
 
       return new FragmentEntriesBinding((NestedScrollView) rootView, buttonReloadEntryData,
           buttonStep1Next, buttonStep2Back, buttonStep2Next, buttonStep3Back, buttonStep3Next,
-          buttonStep4Back, buttonStep4Next, buttonStep5Back, buttonSubmitEntry,
-          containerParameterFields, editEntryDate, editEntryNotes, editEntryTime, panelStep1,
-          panelStep2, panelStep3, panelStep4, panelStep5, spinnerEquipment,
-          spinnerEquipmentCondition, spinnerLocations, spinnerPlants, tvEntryHeaderSubtitle,
-          tvEntryMemberName, tvEntryParameterEmpty, tvEntryShift, tvEntryStatus,
-          tvEntryStepIndicator, tvEntrySummary, tvEntryZone);
+          buttonStep4Back, buttonStep4Next, containerParameterFields, editEntryDate, editEntryNotes,
+          editEntryTime, panelStep1, panelStep2, panelStep3, panelStep4, spinnerLocations,
+          spinnerPlants, tvEntryHeaderSubtitle, tvEntryMemberName, tvEntryParameterEmpty,
+          tvEntryShift, tvEntryStatus, tvEntryStepIndicator, tvEntrySummary, tvEntryZone);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

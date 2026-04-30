@@ -89,8 +89,6 @@ id button_step3_back
 id button_step3_next
 id button_step4_back
 id button_step4_next
-id button_step5_back
-id button_submit_entry
 id container_parameter_fields
 id edit_entry_date
 id edit_entry_notes
@@ -129,7 +127,6 @@ id panel_step_1
 id panel_step_2
 id panel_step_3
 id panel_step_4
-id panel_step_5
 id recent_entry_one_status
 id recent_entry_one_subtitle
 id recent_entry_one_title
@@ -139,8 +136,6 @@ id recent_entry_three_title
 id recent_entry_two_status
 id recent_entry_two_subtitle
 id recent_entry_two_title
-id spinner_equipment
-id spinner_equipment_condition
 id spinner_export_location
 id spinner_locations
 id spinner_plants

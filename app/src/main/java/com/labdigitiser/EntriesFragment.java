@@ -45,7 +45,7 @@ import retrofit2.Response;
 
 public class EntriesFragment extends Fragment {
 
-    private static final int TOTAL_STEPS = 5;
+    private static final int TOTAL_STEPS = 4;
 
     private WebsiteRepository websiteRepository;
     private TextView headerSubtitleText;
@@ -63,7 +63,6 @@ public class EntriesFragment extends Fragment {
     private EditText timeEdit;
     private EditText notesEdit;
     private MaterialButton reloadButton;
-    private MaterialButton submitButton;
     private MaterialButton stepOneNextButton;
     private MaterialButton stepTwoBackButton;
     private MaterialButton stepTwoNextButton;
@@ -71,12 +70,10 @@ public class EntriesFragment extends Fragment {
     private MaterialButton stepThreeNextButton;
     private MaterialButton stepFourBackButton;
     private MaterialButton stepFourNextButton;
-    private MaterialButton stepFiveBackButton;
     private LinearLayout stepOnePanel;
     private LinearLayout stepTwoPanel;
     private LinearLayout stepThreePanel;
     private LinearLayout stepFourPanel;
-    private LinearLayout stepFivePanel;
 
     private final List<ApiPlant> plants = new ArrayList<>();
     private final List<ApiLocation> locations = new ArrayList<>();
@@ -117,7 +114,6 @@ public class EntriesFragment extends Fragment {
         timeEdit = view.findViewById(R.id.edit_entry_time);
         notesEdit = view.findViewById(R.id.edit_entry_notes);
         reloadButton = view.findViewById(R.id.button_reload_entry_data);
-        submitButton = view.findViewById(R.id.button_submit_entry);
         stepOneNextButton = view.findViewById(R.id.button_step1_next);
         stepTwoBackButton = view.findViewById(R.id.button_step2_back);
         stepTwoNextButton = view.findViewById(R.id.button_step2_next);
@@ -125,12 +121,10 @@ public class EntriesFragment extends Fragment {
         stepThreeNextButton = view.findViewById(R.id.button_step3_next);
         stepFourBackButton = view.findViewById(R.id.button_step4_back);
         stepFourNextButton = view.findViewById(R.id.button_step4_next);
-        stepFiveBackButton = view.findViewById(R.id.button_step5_back);
         stepOnePanel = view.findViewById(R.id.panel_step_1);
         stepTwoPanel = view.findViewById(R.id.panel_step_2);
         stepThreePanel = view.findViewById(R.id.panel_step_3);
         stepFourPanel = view.findViewById(R.id.panel_step_4);
-        stepFivePanel = view.findViewById(R.id.panel_step_5);
     }
 
     private void seedTimestamp() {
@@ -147,10 +141,8 @@ public class EntriesFragment extends Fragment {
         stepThreeBackButton.setOnClickListener(v -> showStep(2));
         stepThreeNextButton.setOnClickListener(v -> handleStepThreeNext());
         stepFourBackButton.setOnClickListener(v -> showStep(3));
-        stepFourNextButton.setOnClickListener(v -> showStep(5));
-        stepFiveBackButton.setOnClickListener(v -> showStep(4));
+        stepFourNextButton.setOnClickListener(v -> submitReading());
         reloadButton.setOnClickListener(v -> loadEntryData());
-        submitButton.setOnClickListener(v -> submitReading());
 
         plantsSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
@@ -528,7 +520,7 @@ public class EntriesFragment extends Fragment {
             return;
         }
 
-        submitButton.setEnabled(false);
+        stepFourNextButton.setEnabled(false);
         statusText.setText("Submitting entry to the shared backend...");
 
         String readingDate = valueOf(dateEdit);
@@ -553,7 +545,7 @@ public class EntriesFragment extends Fragment {
                     return;
                 }
 
-                submitButton.setEnabled(true);
+                stepFourNextButton.setEnabled(true);
                 ApiWriteResponse body = response.body();
                 if (!response.isSuccessful() || body == null || !body.isSuccess()) {
                     String message = body != null && body.getMessage() != null ? body.getMessage() : "Submission failed.";
@@ -574,7 +566,7 @@ public class EntriesFragment extends Fragment {
                     return;
                 }
 
-                submitButton.setEnabled(true);
+                stepFourNextButton.setEnabled(true);
                 statusText.setText(t.getMessage());
                 Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -624,7 +616,6 @@ public class EntriesFragment extends Fragment {
         stepTwoPanel.setVisibility(step == 2 ? View.VISIBLE : View.GONE);
         stepThreePanel.setVisibility(step == 3 ? View.VISIBLE : View.GONE);
         stepFourPanel.setVisibility(step == 4 ? View.VISIBLE : View.GONE);
-        stepFivePanel.setVisibility(step == 5 ? View.VISIBLE : View.GONE);
     }
 
     private ApiPlant getSelectedPlant() {
@@ -645,7 +636,7 @@ public class EntriesFragment extends Fragment {
 
     private void setLoadingState(boolean loading, String message) {
         reloadButton.setEnabled(!loading);
-        submitButton.setEnabled(!loading);
+        stepFourNextButton.setEnabled(!loading);
         statusText.setText(message);
         parameterEmptyText.setText(loading ? "Loading parameters..." : parameterEmptyText.getText());
     }

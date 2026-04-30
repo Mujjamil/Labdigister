@@ -97,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:text="Step 1 of 5"
+                    android:text="Step 1 of 4"
                     android:textColor="@color/text_muted"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -344,70 +344,7 @@
 
                 <TextView
                     style="@style/SectionTitle"
-                    android:text="STEP 4 / EQUIPMENT" />
-
-                <TextView
-                    style="@style/LabelText"
-                    android:layout_marginTop="16dp"
-                    android:text="SELECT EQUIPMENT" />
-
-                <Spinner
-                    android:id="@+id/spinner_equipment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
-
-                <TextView
-                    style="@style/LabelText"
-                    android:layout_marginTop="16dp"
-                    android:text="CONDITION" />
-
-                <Spinner
-                    android:id="@+id/spinner_equipment_condition"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_step4_back"
-                        style="@style/Widget.LabDigitiser.OutlineButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:text="Back" />
-
-                    <Space
-                        android:layout_width="12dp"
-                        android:layout_height="1dp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_step4_next"
-                        style="@style/Widget.LabDigitiser.PrimaryButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:text="Next" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/panel_step_5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:background="@drawable/bg_surface_card"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/SectionTitle"
-                    android:text="STEP 5 / REVIEW &amp; SUBMIT" />
+                    android:text="STEP 4 / REVIEW &amp; SUBMIT" />
 
                 <TextView
                     style="@style/LabelText"
@@ -431,7 +368,7 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_step5_back"
+                        android:id="@+id/button_step4_back"
                         style="@style/Widget.LabDigitiser.OutlineButton"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
@@ -442,7 +379,7 @@
                         android:layout_height="1dp" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_submit_entry"
+                        android:id="@+id/button_step4_next"
                         style="@style/Widget.LabDigitiser.PrimaryButton"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"

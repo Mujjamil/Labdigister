@@ -3280,8 +3280,6 @@ id button_step3_back
 id button_step3_next
 id button_step4_back
 id button_step4_next
-id button_step5_back
-id button_submit_entry
 id cache_measures
 id callMeasure
 id cancel_button
@@ -3561,7 +3559,6 @@ id panel_step_1
 id panel_step_2
 id panel_step_3
 id panel_step_4
-id panel_step_5
 id parallax
 id parent
 id parentPanel
@@ -3638,8 +3635,6 @@ id snapMargins
 id south
 id spacer
 id special_effects_controller_view_tag
-id spinner_equipment
-id spinner_equipment_condition
 id spinner_export_location
 id spinner_locations
 id spinner_plants

@@ -83,6 +83,7 @@
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
                 android:text="PLANT: MIDC UNIT - PUNE"
+                android:textStyle="bold"
                 android:textColor="@color/brand_green"
                 android:textSize="11sp" />
 
@@ -156,6 +157,7 @@
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="0dp"
                         android:text="Active"
+                        android:textStyle="bold"
                         android:textColor="@color/brand_green"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -209,6 +211,7 @@
                         android:paddingHorizontal="8dp"
                         android:paddingVertical="0dp"
                         android:text="Active"
+                        android:textStyle="bold"
                         android:textColor="@color/brand_green"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -216,26 +219,49 @@
 
             <TextView style="@style/SectionTitle" android:layout_marginTop="30dp" android:text="TODAY'S READINGS" />
 
-            <GridLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:columnCount="2"
-                android:paddingEnd="4dp"
-                android:rowCount="2">
+                android:orientation="vertical">
 
-                <include layout="@layout/include_metric_card"
-                    android:id="@+id/metric_ph" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <include layout="@layout/include_metric_card_tds"
-                    android:id="@+id/metric_tds" />
+                    <include
+                        android:id="@+id/metric_ph"
+                        layout="@layout/include_metric_card" />
 
-                <include layout="@layout/include_metric_card_bod"
-                    android:id="@+id/metric_bod" />
+                    <Space
+                        android:layout_width="16dp"
+                        android:layout_height="1dp" />
 
-                <include layout="@layout/include_metric_card_cod"
-                    android:id="@+id/metric_cod" />
-            </GridLayout>
+                    <include
+                        android:id="@+id/metric_tds"
+                        layout="@layout/include_metric_card_tds" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/metric_bod"
+                        layout="@layout/include_metric_card_bod" />
+
+                    <Space
+                        android:layout_width="16dp"
+                        android:layout_height="1dp" />
+
+                    <include
+                        android:id="@+id/metric_cod"
+                        layout="@layout/include_metric_card_cod" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView style="@style/SectionTitle" android:layout_marginTop="30dp" android:text="RECENT ENTRIES" />
 
