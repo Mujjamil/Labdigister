@@ -10,7 +10,7 @@ public class CreateReadingRequest {
     private final String reading_time;
     private final String shift;
     private final String notes;
-    private final List<ParameterValueRequest> parameter_values;
+    private final List<ParameterValueRequest> values;
 
     public CreateReadingRequest(
             int plantId,
@@ -27,7 +27,7 @@ public class CreateReadingRequest {
         this.reading_time = readingTime;
         this.shift = shift;
         this.notes = notes;
-        this.parameter_values = parameterValues;
+        this.values = parameterValues;
     }
 
     public static class ParameterValueRequest {

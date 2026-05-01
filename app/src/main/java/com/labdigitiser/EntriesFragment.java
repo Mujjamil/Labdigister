@@ -701,7 +701,7 @@ public class EntriesFragment extends Fragment {
     }
 
     private String normaliseTime(String time) {
-        return isValidTime(time) ? time + ":00" : time;
+        return isValidTime(time) ? time : time;
     }
 
     private String buildParameterMeta(ApiParameter parameter) {
