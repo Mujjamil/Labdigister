@@ -3283,6 +3283,8 @@ id button_step4_next
 id cache_measures
 id callMeasure
 id cancel_button
+id card_primary_assigned_plant
+id card_secondary_assigned_plant
 id carryVelocity
 id center
 id centerCrop
@@ -3710,6 +3712,7 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id tv_assigned_plants_action
 id tv_avatar_initial
 id tv_entry_header_subtitle
 id tv_entry_member_name
@@ -3739,6 +3742,7 @@ id tv_profile_website_url
 id tv_secondary_module_description
 id tv_secondary_module_name
 id tv_secondary_module_status
+id tv_section_assigned_plants
 id tv_user_name
 id unchecked
 id uniform

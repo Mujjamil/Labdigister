@@ -89,6 +89,8 @@ id button_step3_back
 id button_step3_next
 id button_step4_back
 id button_step4_next
+id card_primary_assigned_plant
+id card_secondary_assigned_plant
 id container_parameter_fields
 id edit_entry_date
 id edit_entry_notes
@@ -141,6 +143,7 @@ id spinner_locations
 id spinner_plants
 id top_section
 id top_watermark
+id tv_assigned_plants_action
 id tv_avatar_initial
 id tv_entry_header_subtitle
 id tv_entry_member_name
@@ -170,6 +173,7 @@ id tv_profile_website_url
 id tv_secondary_module_description
 id tv_secondary_module_name
 id tv_secondary_module_status
+id tv_section_assigned_plants
 id tv_user_name
 layout activity_login
 layout activity_main

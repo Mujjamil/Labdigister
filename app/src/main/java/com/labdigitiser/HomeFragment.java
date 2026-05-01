@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,21 +27,36 @@ import java.util.Locale;
 public class HomeFragment extends Fragment {
 
     private WebsiteRepository websiteRepository;
+    private View rootView;
+    private ApiPlant primaryAssignedPlant;
+    private ApiPlant secondaryAssignedPlant;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        rootView = view;
         websiteRepository = new WebsiteRepository(requireContext());
         bindUserHeader(view);
+        bindAssignedPlantActions(view);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (rootView != null) {
+            bindUserHeader(rootView);
+        }
     }
 
     private void bindUserHeader(View view) {
         TextView userNameText = view.findViewById(R.id.tv_user_name);
         TextView avatarInitialText = view.findViewById(R.id.tv_avatar_initial);
         TextView plantNameText = view.findViewById(R.id.tv_plant_name);
+        TextView assignedPlantsTitleText = view.findViewById(R.id.tv_section_assigned_plants);
+        TextView assignedPlantsActionText = view.findViewById(R.id.tv_assigned_plants_action);
         TextView primaryModuleNameText = view.findViewById(R.id.tv_primary_module_name);
         TextView primaryModuleDescriptionText = view.findViewById(R.id.tv_primary_module_description);
         TextView primaryModuleStatusText = view.findViewById(R.id.tv_primary_module_status);
@@ -95,13 +111,20 @@ public class HomeFragment extends Fragment {
 
                 if (selectedPlant != null) {
                     plantNameText.setText(selectedPlant.getCompanyName() + " / " + selectedPlant.getPlantName());
-                    primaryModuleNameText.setText(selectedPlant.getPlantName());
-                    primaryModuleDescriptionText.setText(selectedPlant.getDescription());
-                    primaryModuleStatusText.setText(selectedPlant.isActive() ? "Active" : "Inactive");
-                    secondaryModuleNameText.setText(selectedPlant.getPlantType() + " Configuration");
-                    secondaryModuleDescriptionText.setText("Company code: " + safeText(selectedPlant.getShortCode(), "-"));
-                    secondaryModuleStatusText.setText(safeText(user != null ? user.getRole() : null, "member"));
                 }
+
+                assignedPlantsTitleText.setText("ASSIGNED PLANTS");
+                bindAssignedPlantCards(
+                        plants,
+                        selectedPlant,
+                        assignedPlantsActionText,
+                        primaryModuleNameText,
+                        primaryModuleDescriptionText,
+                        primaryModuleStatusText,
+                        secondaryModuleNameText,
+                        secondaryModuleDescriptionText,
+                        secondaryModuleStatusText
+                );
 
                 bindDashboardData(
                         metricOneLabel,
@@ -132,6 +155,14 @@ public class HomeFragment extends Fragment {
             public void onFailure(retrofit2.Call<ApiResponse<ApiSessionData>> call, Throwable t) {
             }
         });
+    }
+
+    private void bindAssignedPlantActions(View view) {
+        View primaryCard = view.findViewById(R.id.card_primary_assigned_plant);
+        View secondaryCard = view.findViewById(R.id.card_secondary_assigned_plant);
+
+        primaryCard.setOnClickListener(v -> switchToAssignedPlant(primaryAssignedPlant));
+        secondaryCard.setOnClickListener(v -> switchToAssignedPlant(secondaryAssignedPlant));
     }
 
     private void bindDashboardData(
@@ -379,6 +410,106 @@ public class HomeFragment extends Fragment {
             return "";
         }
         return value.length() >= 5 ? value.substring(0, 5) : value;
+    }
+
+    private void bindAssignedPlantCards(
+            List<ApiPlant> plants,
+            ApiPlant selectedPlant,
+            TextView actionText,
+            TextView primaryName,
+            TextView primaryDescription,
+            TextView primaryStatus,
+            TextView secondaryName,
+            TextView secondaryDescription,
+            TextView secondaryStatus
+    ) {
+        List<ApiPlant> orderedPlants = new java.util.ArrayList<>();
+        if (selectedPlant != null) {
+            orderedPlants.add(selectedPlant);
+        }
+        if (plants != null) {
+            for (ApiPlant plant : plants) {
+                if (selectedPlant != null && plant.getId() == selectedPlant.getId()) {
+                    continue;
+                }
+                orderedPlants.add(plant);
+            }
+        }
+
+        primaryAssignedPlant = getPlantAt(orderedPlants, 0);
+        secondaryAssignedPlant = getPlantAt(orderedPlants, 1);
+
+        bindAssignedPlantCard(primaryName, primaryDescription, primaryStatus, primaryAssignedPlant);
+        bindAssignedPlantCard(secondaryName, secondaryDescription, secondaryStatus, secondaryAssignedPlant);
+
+        if (actionText != null) {
+            actionText.setVisibility(orderedPlants.size() > 2 ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+    private void bindAssignedPlantCard(
+            TextView nameView,
+            TextView descriptionView,
+            TextView statusView,
+            ApiPlant plant
+    ) {
+        if (plant == null) {
+            nameView.setText("No plant assigned");
+            descriptionView.setText("Assign another plant from the website admin panel.");
+            bindAssignmentStatus(statusView, false, false);
+            return;
+        }
+
+        nameView.setText(plant.getPlantName());
+        descriptionView.setText(safeText(plant.getCompanyName(), safeText(plant.getDescription(), "-")));
+        boolean isCurrentPlant = websiteRepository.getSelectedPlantId() != null
+                && websiteRepository.getSelectedPlantId().equals(String.valueOf(plant.getId()));
+        bindAssignmentStatus(statusView, true, isCurrentPlant);
+    }
+
+    private ApiPlant getPlantAt(List<ApiPlant> plants, int index) {
+        if (plants == null || index < 0 || index >= plants.size()) {
+            return null;
+        }
+        return plants.get(index);
+    }
+
+    private void switchToAssignedPlant(ApiPlant plant) {
+        if (!isAdded() || plant == null) {
+            return;
+        }
+
+        String currentPlantId = websiteRepository.getSelectedPlantId();
+        String targetPlantId = String.valueOf(plant.getId());
+        if (targetPlantId.equals(currentPlantId)) {
+            return;
+        }
+
+        websiteRepository.selectPlant(targetPlantId, plant.getPlantName());
+        Toast.makeText(requireContext(), "Switched to " + plant.getPlantName(), Toast.LENGTH_SHORT).show();
+        if (rootView != null) {
+            bindUserHeader(rootView);
+        }
+    }
+
+    private void bindAssignmentStatus(TextView statusView, boolean isAssigned, boolean isCurrentPlant) {
+        if (!isAssigned) {
+            statusView.setText("Not Assigned");
+            statusView.setBackgroundResource(R.drawable.bg_table_status_pending);
+            statusView.setTextColor(getResources().getColor(R.color.status_pending, null));
+            return;
+        }
+
+        if (isCurrentPlant) {
+            statusView.setText("Current");
+            statusView.setBackgroundResource(R.drawable.bg_table_status_synced);
+            statusView.setTextColor(getResources().getColor(R.color.brand_green, null));
+            return;
+        }
+
+        statusView.setText("Assigned");
+        statusView.setBackgroundResource(R.drawable.bg_chip_active_soft);
+        statusView.setTextColor(getResources().getColor(R.color.brand_green, null));
     }
 
     private String safeText(String value, String fallback) {

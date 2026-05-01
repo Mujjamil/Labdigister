@@ -4,6 +4,7 @@ package com.labdigitiser.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,12 @@ public final class FragmentHomeBinding implements ViewBinding {
   private final NestedScrollView rootView;
 
   @NonNull
+  public final LinearLayout cardPrimaryAssignedPlant;
+
+  @NonNull
+  public final LinearLayout cardSecondaryAssignedPlant;
+
+  @NonNull
   public final IncludeMetricCardBodBinding metricBod;
 
   @NonNull
@@ -30,6 +37,9 @@ public final class FragmentHomeBinding implements ViewBinding {
 
   @NonNull
   public final IncludeMetricCardTdsBinding metricTds;
+
+  @NonNull
+  public final TextView tvAssignedPlantsAction;
 
   @NonNull
   public final TextView tvAvatarInitial;
@@ -56,21 +66,30 @@ public final class FragmentHomeBinding implements ViewBinding {
   public final TextView tvSecondaryModuleStatus;
 
   @NonNull
+  public final TextView tvSectionAssignedPlants;
+
+  @NonNull
   public final TextView tvUserName;
 
   private FragmentHomeBinding(@NonNull NestedScrollView rootView,
+      @NonNull LinearLayout cardPrimaryAssignedPlant,
+      @NonNull LinearLayout cardSecondaryAssignedPlant,
       @NonNull IncludeMetricCardBodBinding metricBod,
       @NonNull IncludeMetricCardCodBinding metricCod, @NonNull IncludeMetricCardBinding metricPh,
-      @NonNull IncludeMetricCardTdsBinding metricTds, @NonNull TextView tvAvatarInitial,
-      @NonNull TextView tvPlantName, @NonNull TextView tvPrimaryModuleDescription,
-      @NonNull TextView tvPrimaryModuleName, @NonNull TextView tvPrimaryModuleStatus,
-      @NonNull TextView tvSecondaryModuleDescription, @NonNull TextView tvSecondaryModuleName,
-      @NonNull TextView tvSecondaryModuleStatus, @NonNull TextView tvUserName) {
+      @NonNull IncludeMetricCardTdsBinding metricTds, @NonNull TextView tvAssignedPlantsAction,
+      @NonNull TextView tvAvatarInitial, @NonNull TextView tvPlantName,
+      @NonNull TextView tvPrimaryModuleDescription, @NonNull TextView tvPrimaryModuleName,
+      @NonNull TextView tvPrimaryModuleStatus, @NonNull TextView tvSecondaryModuleDescription,
+      @NonNull TextView tvSecondaryModuleName, @NonNull TextView tvSecondaryModuleStatus,
+      @NonNull TextView tvSectionAssignedPlants, @NonNull TextView tvUserName) {
     this.rootView = rootView;
+    this.cardPrimaryAssignedPlant = cardPrimaryAssignedPlant;
+    this.cardSecondaryAssignedPlant = cardSecondaryAssignedPlant;
     this.metricBod = metricBod;
     this.metricCod = metricCod;
     this.metricPh = metricPh;
     this.metricTds = metricTds;
+    this.tvAssignedPlantsAction = tvAssignedPlantsAction;
     this.tvAvatarInitial = tvAvatarInitial;
     this.tvPlantName = tvPlantName;
     this.tvPrimaryModuleDescription = tvPrimaryModuleDescription;
@@ -79,6 +98,7 @@ public final class FragmentHomeBinding implements ViewBinding {
     this.tvSecondaryModuleDescription = tvSecondaryModuleDescription;
     this.tvSecondaryModuleName = tvSecondaryModuleName;
     this.tvSecondaryModuleStatus = tvSecondaryModuleStatus;
+    this.tvSectionAssignedPlants = tvSectionAssignedPlants;
     this.tvUserName = tvUserName;
   }
 
@@ -109,6 +129,18 @@ public final class FragmentHomeBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.card_primary_assigned_plant;
+      LinearLayout cardPrimaryAssignedPlant = ViewBindings.findChildViewById(rootView, id);
+      if (cardPrimaryAssignedPlant == null) {
+        break missingId;
+      }
+
+      id = R.id.card_secondary_assigned_plant;
+      LinearLayout cardSecondaryAssignedPlant = ViewBindings.findChildViewById(rootView, id);
+      if (cardSecondaryAssignedPlant == null) {
+        break missingId;
+      }
+
       id = R.id.metric_bod;
       View metricBod = ViewBindings.findChildViewById(rootView, id);
       if (metricBod == null) {
@@ -136,6 +168,12 @@ public final class FragmentHomeBinding implements ViewBinding {
         break missingId;
       }
       IncludeMetricCardTdsBinding binding_metricTds = IncludeMetricCardTdsBinding.bind(metricTds);
+
+      id = R.id.tv_assigned_plants_action;
+      TextView tvAssignedPlantsAction = ViewBindings.findChildViewById(rootView, id);
+      if (tvAssignedPlantsAction == null) {
+        break missingId;
+      }
 
       id = R.id.tv_avatar_initial;
       TextView tvAvatarInitial = ViewBindings.findChildViewById(rootView, id);
@@ -185,16 +223,24 @@ public final class FragmentHomeBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tv_section_assigned_plants;
+      TextView tvSectionAssignedPlants = ViewBindings.findChildViewById(rootView, id);
+      if (tvSectionAssignedPlants == null) {
+        break missingId;
+      }
+
       id = R.id.tv_user_name;
       TextView tvUserName = ViewBindings.findChildViewById(rootView, id);
       if (tvUserName == null) {
         break missingId;
       }
 
-      return new FragmentHomeBinding((NestedScrollView) rootView, binding_metricBod,
-          binding_metricCod, binding_metricPh, binding_metricTds, tvAvatarInitial, tvPlantName,
+      return new FragmentHomeBinding((NestedScrollView) rootView, cardPrimaryAssignedPlant,
+          cardSecondaryAssignedPlant, binding_metricBod, binding_metricCod, binding_metricPh,
+          binding_metricTds, tvAssignedPlantsAction, tvAvatarInitial, tvPlantName,
           tvPrimaryModuleDescription, tvPrimaryModuleName, tvPrimaryModuleStatus,
-          tvSecondaryModuleDescription, tvSecondaryModuleName, tvSecondaryModuleStatus, tvUserName);
+          tvSecondaryModuleDescription, tvSecondaryModuleName, tvSecondaryModuleStatus,
+          tvSectionAssignedPlants, tvUserName);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
