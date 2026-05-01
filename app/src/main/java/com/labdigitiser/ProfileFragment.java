@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.labdigitiser.network.model.ApiSessionData;
 import com.labdigitiser.network.model.ApiUser;
 
 import java.util.List;
+import java.util.Locale;
 
 public class ProfileFragment extends Fragment {
 
@@ -37,17 +39,21 @@ public class ProfileFragment extends Fragment {
 
     private void bindProfile(View view) {
         TextView avatarText = view.findViewById(R.id.tv_profile_avatar);
+        TextView verifiedText = view.findViewById(R.id.tv_profile_verified);
         TextView nameText = view.findViewById(R.id.tv_profile_name);
-        TextView emailText = view.findViewById(R.id.tv_profile_email);
-        TextView industryText = view.findViewById(R.id.tv_profile_industry);
         TextView roleText = view.findViewById(R.id.tv_profile_role);
-        TextView organizationIdText = view.findViewById(R.id.tv_profile_organization_id);
-        TextView panelStatusText = view.findViewById(R.id.tv_profile_panel_status);
-        TextView panelMessageText = view.findViewById(R.id.tv_profile_panel_message);
-        TextView websiteUrlText = view.findViewById(R.id.tv_profile_website_url);
+        TextView plantBadgeText = view.findViewById(R.id.tv_profile_plant_badge);
+        TextView plantDetailsText = view.findViewById(R.id.tv_profile_plant_details);
+        TextView locationBadgeText = view.findViewById(R.id.tv_profile_location_badge);
+        TextView versionText = view.findViewById(R.id.tv_profile_version);
+        LinearLayout modulesLayout = view.findViewById(R.id.layout_profile_modules);
 
-        websiteUrlText.setText("Website: " + BuildConfig.LABDIGITISER_BASE_URL);
-        panelStatusText.setText("Panel status: Checking live API session...");
+        versionText.setText("LIVE MEMBER PROFILE");
+        verifiedText.setText("✓");
+        roleText.setText("Member");
+        plantBadgeText.setText("NO PLANT ASSIGNED");
+        plantDetailsText.setText("Waiting for live assignment data.");
+        locationBadgeText.setText("API");
 
         websiteRepository.getCurrentUser().enqueue(new retrofit2.Callback<ApiResponse<ApiSessionData>>() {
             @Override
@@ -61,8 +67,8 @@ public class ProfileFragment extends Fragment {
 
                 ApiResponse<ApiSessionData> body = response.body();
                 if (!response.isSuccessful() || body == null || !body.isSuccess() || body.getData() == null) {
-                    panelStatusText.setText("Panel status: API session unavailable");
-                    panelMessageText.setText(body != null ? body.getReadableMessage() : getString(R.string.api_ready_waiting_message));
+                    plantDetailsText.setText(body != null ? body.getReadableMessage() : "Unable to load live profile data.");
+                    verifiedText.setText("!");
                     return;
                 }
 
@@ -71,31 +77,24 @@ public class ProfileFragment extends Fragment {
                 List<ApiPlant> plants = data.getPlants();
 
                 if (user != null) {
-                    nameText.setText(user.getName());
-                    emailText.setText(user.getEmail());
-                    roleText.setText("Role: " + safeText(user.getRole(), "member"));
+                    nameText.setText(safeText(user.getName(), "Member"));
+                    roleText.setText(formatRole(user.getRole()));
                     avatarText.setText(getInitial(user.getName()));
+                    verifiedText.setText(user.isActive() ? "✓" : "!");
                 }
 
                 ApiPlant selectedPlant = getSelectedPlant(plants);
                 if (selectedPlant != null) {
-                    industryText.setText("Company: " + safeText(selectedPlant.getCompanyName(), "Not assigned"));
-                    organizationIdText.setText("Plant ID: " + selectedPlant.getId());
-                    panelMessageText.setText(
-                            "Connected to live API for "
-                                    + selectedPlant.getPlantName()
-                                    + " ("
-                                    + selectedPlant.getPlantType()
-                                    + ") at "
-                                    + selectedPlant.getCompanyName()
-                    );
+                    plantBadgeText.setText(buildPlantBadge(selectedPlant));
+                    plantDetailsText.setText(buildPlantDetails(selectedPlant));
+                    locationBadgeText.setText(buildLocationBadge(selectedPlant));
                 } else {
-                    industryText.setText("Company: Not assigned");
-                    organizationIdText.setText("Plant ID: -");
-                    panelMessageText.setText("Logged in through the live API, but no plant is currently selected.");
+                    plantBadgeText.setText("NO PLANT ASSIGNED");
+                    plantDetailsText.setText("Logged in successfully, but no plant is currently assigned.");
+                    locationBadgeText.setText("N/A");
                 }
 
-                panelStatusText.setText("Panel status: Connected to live API");
+                bindAssignedModules(modulesLayout, plants);
             }
 
             @Override
@@ -104,10 +103,28 @@ public class ProfileFragment extends Fragment {
                     return;
                 }
 
-                panelStatusText.setText("Panel status: API request failed");
-                panelMessageText.setText(t.getMessage());
+                verifiedText.setText("!");
+                plantDetailsText.setText(t.getMessage());
             }
         });
+    }
+
+    private void bindAssignedModules(LinearLayout container, List<ApiPlant> plants) {
+        container.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+
+        if (plants == null || plants.isEmpty()) {
+            TextView chip = (TextView) inflater.inflate(R.layout.include_profile_module_chip, container, false);
+            chip.setText("NO MODULES");
+            container.addView(chip);
+            return;
+        }
+
+        for (ApiPlant plant : plants) {
+            TextView chip = (TextView) inflater.inflate(R.layout.include_profile_module_chip, container, false);
+            chip.setText(buildModuleLabel(plant));
+            container.addView(chip);
+        }
     }
 
     private void bindLogout(View view) {
@@ -152,5 +169,50 @@ public class ProfileFragment extends Fragment {
 
     private String safeText(String value, String fallback) {
         return value == null || value.trim().isEmpty() ? fallback : value.trim();
+    }
+
+    private String formatRole(String role) {
+        if (role == null) {
+            return "Scientific Member";
+        }
+
+        String lower = role.trim().toLowerCase(Locale.US);
+        switch (lower) {
+            case "member":
+                return "Industry Operator";
+            case "admin":
+                return "Admin";
+            default:
+                return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
+        }
+    }
+
+    private String buildPlantBadge(ApiPlant plant) {
+        return (safeText(plant.getCompanyName(), "UNIT") + " . " + safeText(plant.getPlantName(), "PLANT")).toUpperCase(Locale.US);
+    }
+
+    private String buildPlantDetails(ApiPlant plant) {
+        return safeText(plant.getPlantName(), "Plant")
+                + " . "
+                + safeText(plant.getPlantType(), "Unit")
+                + " . "
+                + safeText(plant.getCompanyName(), "Assigned company");
+    }
+
+    private String buildLocationBadge(ApiPlant plant) {
+        String shortCode = safeText(plant.getShortCode(), "");
+        if (!shortCode.isEmpty()) {
+            return shortCode.toUpperCase(Locale.US);
+        }
+        return safeText(plant.getPlantType(), "PLANT").toUpperCase(Locale.US);
+    }
+
+    private String buildModuleLabel(ApiPlant plant) {
+        String type = safeText(plant.getPlantType(), "PLANT").toUpperCase(Locale.US);
+        String name = safeText(plant.getPlantName(), "UNIT").toUpperCase(Locale.US);
+        if (name.contains(type)) {
+            return name;
+        }
+        return type + " " + name;
     }
 }

@@ -5,10 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.labdigitiser.R;
@@ -18,60 +19,60 @@ import java.lang.String;
 
 public final class FragmentProfileBinding implements ViewBinding {
   @NonNull
-  private final ScrollView rootView;
+  private final NestedScrollView rootView;
 
   @NonNull
   public final Button buttonLogout;
 
   @NonNull
+  public final LinearLayout layoutProfileModules;
+
+  @NonNull
   public final TextView tvProfileAvatar;
 
   @NonNull
-  public final TextView tvProfileEmail;
-
-  @NonNull
-  public final TextView tvProfileIndustry;
+  public final TextView tvProfileLocationBadge;
 
   @NonNull
   public final TextView tvProfileName;
 
   @NonNull
-  public final TextView tvProfileOrganizationId;
+  public final TextView tvProfilePlantBadge;
 
   @NonNull
-  public final TextView tvProfilePanelMessage;
-
-  @NonNull
-  public final TextView tvProfilePanelStatus;
+  public final TextView tvProfilePlantDetails;
 
   @NonNull
   public final TextView tvProfileRole;
 
   @NonNull
-  public final TextView tvProfileWebsiteUrl;
+  public final TextView tvProfileVerified;
 
-  private FragmentProfileBinding(@NonNull ScrollView rootView, @NonNull Button buttonLogout,
-      @NonNull TextView tvProfileAvatar, @NonNull TextView tvProfileEmail,
-      @NonNull TextView tvProfileIndustry, @NonNull TextView tvProfileName,
-      @NonNull TextView tvProfileOrganizationId, @NonNull TextView tvProfilePanelMessage,
-      @NonNull TextView tvProfilePanelStatus, @NonNull TextView tvProfileRole,
-      @NonNull TextView tvProfileWebsiteUrl) {
+  @NonNull
+  public final TextView tvProfileVersion;
+
+  private FragmentProfileBinding(@NonNull NestedScrollView rootView, @NonNull Button buttonLogout,
+      @NonNull LinearLayout layoutProfileModules, @NonNull TextView tvProfileAvatar,
+      @NonNull TextView tvProfileLocationBadge, @NonNull TextView tvProfileName,
+      @NonNull TextView tvProfilePlantBadge, @NonNull TextView tvProfilePlantDetails,
+      @NonNull TextView tvProfileRole, @NonNull TextView tvProfileVerified,
+      @NonNull TextView tvProfileVersion) {
     this.rootView = rootView;
     this.buttonLogout = buttonLogout;
+    this.layoutProfileModules = layoutProfileModules;
     this.tvProfileAvatar = tvProfileAvatar;
-    this.tvProfileEmail = tvProfileEmail;
-    this.tvProfileIndustry = tvProfileIndustry;
+    this.tvProfileLocationBadge = tvProfileLocationBadge;
     this.tvProfileName = tvProfileName;
-    this.tvProfileOrganizationId = tvProfileOrganizationId;
-    this.tvProfilePanelMessage = tvProfilePanelMessage;
-    this.tvProfilePanelStatus = tvProfilePanelStatus;
+    this.tvProfilePlantBadge = tvProfilePlantBadge;
+    this.tvProfilePlantDetails = tvProfilePlantDetails;
     this.tvProfileRole = tvProfileRole;
-    this.tvProfileWebsiteUrl = tvProfileWebsiteUrl;
+    this.tvProfileVerified = tvProfileVerified;
+    this.tvProfileVersion = tvProfileVersion;
   }
 
   @Override
   @NonNull
-  public ScrollView getRoot() {
+  public NestedScrollView getRoot() {
     return rootView;
   }
 
@@ -102,21 +103,21 @@ public final class FragmentProfileBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.layout_profile_modules;
+      LinearLayout layoutProfileModules = ViewBindings.findChildViewById(rootView, id);
+      if (layoutProfileModules == null) {
+        break missingId;
+      }
+
       id = R.id.tv_profile_avatar;
       TextView tvProfileAvatar = ViewBindings.findChildViewById(rootView, id);
       if (tvProfileAvatar == null) {
         break missingId;
       }
 
-      id = R.id.tv_profile_email;
-      TextView tvProfileEmail = ViewBindings.findChildViewById(rootView, id);
-      if (tvProfileEmail == null) {
-        break missingId;
-      }
-
-      id = R.id.tv_profile_industry;
-      TextView tvProfileIndustry = ViewBindings.findChildViewById(rootView, id);
-      if (tvProfileIndustry == null) {
+      id = R.id.tv_profile_location_badge;
+      TextView tvProfileLocationBadge = ViewBindings.findChildViewById(rootView, id);
+      if (tvProfileLocationBadge == null) {
         break missingId;
       }
 
@@ -126,21 +127,15 @@ public final class FragmentProfileBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.tv_profile_organization_id;
-      TextView tvProfileOrganizationId = ViewBindings.findChildViewById(rootView, id);
-      if (tvProfileOrganizationId == null) {
+      id = R.id.tv_profile_plant_badge;
+      TextView tvProfilePlantBadge = ViewBindings.findChildViewById(rootView, id);
+      if (tvProfilePlantBadge == null) {
         break missingId;
       }
 
-      id = R.id.tv_profile_panel_message;
-      TextView tvProfilePanelMessage = ViewBindings.findChildViewById(rootView, id);
-      if (tvProfilePanelMessage == null) {
-        break missingId;
-      }
-
-      id = R.id.tv_profile_panel_status;
-      TextView tvProfilePanelStatus = ViewBindings.findChildViewById(rootView, id);
-      if (tvProfilePanelStatus == null) {
+      id = R.id.tv_profile_plant_details;
+      TextView tvProfilePlantDetails = ViewBindings.findChildViewById(rootView, id);
+      if (tvProfilePlantDetails == null) {
         break missingId;
       }
 
@@ -150,15 +145,22 @@ public final class FragmentProfileBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.tv_profile_website_url;
-      TextView tvProfileWebsiteUrl = ViewBindings.findChildViewById(rootView, id);
-      if (tvProfileWebsiteUrl == null) {
+      id = R.id.tv_profile_verified;
+      TextView tvProfileVerified = ViewBindings.findChildViewById(rootView, id);
+      if (tvProfileVerified == null) {
         break missingId;
       }
 
-      return new FragmentProfileBinding((ScrollView) rootView, buttonLogout, tvProfileAvatar,
-          tvProfileEmail, tvProfileIndustry, tvProfileName, tvProfileOrganizationId,
-          tvProfilePanelMessage, tvProfilePanelStatus, tvProfileRole, tvProfileWebsiteUrl);
+      id = R.id.tv_profile_version;
+      TextView tvProfileVersion = ViewBindings.findChildViewById(rootView, id);
+      if (tvProfileVersion == null) {
+        break missingId;
+      }
+
+      return new FragmentProfileBinding((NestedScrollView) rootView, buttonLogout,
+          layoutProfileModules, tvProfileAvatar, tvProfileLocationBadge, tvProfileName,
+          tvProfilePlantBadge, tvProfilePlantDetails, tvProfileRole, tvProfileVerified,
+          tvProfileVersion);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

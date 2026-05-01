@@ -1,51 +1,76 @@
 package com.labdigitiser;
 
 import android.os.Bundle;
-import android.app.DatePickerDialog;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.labdigitiser.network.WebsiteRepository;
 import com.labdigitiser.network.model.ApiDashboardData;
-import com.labdigitiser.network.model.ApiLocation;
+import com.labdigitiser.network.model.ApiDashboardEntry;
 import com.labdigitiser.network.model.ApiPlant;
+import com.labdigitiser.network.model.ApiReadingDetail;
+import com.labdigitiser.network.model.ApiReadingValue;
 import com.labdigitiser.network.model.ApiResponse;
 import com.labdigitiser.network.model.ApiSessionData;
 import com.labdigitiser.network.model.ApiStats;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ReportsFragment extends Fragment {
+
+    private static final String RANGE_ALL = "all";
+    private static final String RANGE_TODAY = "today";
+    private static final String RANGE_WEEK = "week";
+    private static final String RANGE_MONTH = "month";
+
+    private final SimpleDateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    private final SimpleDateFormat shortDateFormat = new SimpleDateFormat("MMM dd", Locale.US);
+    private final SimpleDateFormat syncTimeFormat = new SimpleDateFormat("hh:mm a", Locale.US);
 
     private WebsiteRepository websiteRepository;
     private TextView plantText;
-    private TextView hintText;
-    private TextView previewText;
-    private TextView previewCountText;
+    private TextView syncBadgeText;
     private TextView statusText;
-    private Spinner locationSpinner;
-    private EditText startDateEdit;
-    private EditText endDateEdit;
-    private MaterialButton downloadButton;
-    private final List<ApiLocation> locations = new ArrayList<>();
-    private int availableRecordCount;
+    private TextView totalEntriesValueText;
+    private TextView scopeLabelText;
+    private TextView scopeValueText;
+    private TextView avgPhValueText;
+    private TextView avgTdsValueText;
+    private TextView emptyStateText;
+    private LinearLayout rowsContainer;
+    private MaterialButton exportButton;
+    private TextView recordsActionText;
+    private TextView chipAll;
+    private TextView chipToday;
+    private TextView chipWeek;
+    private TextView chipMonth;
+
+    private String selectedRange = RANGE_ALL;
+    private ApiStats latestStats;
+    private final List<ReportRow> reportRows = new ArrayList<>();
+    private int pendingRowRequests;
 
     @Nullable
     @Override
@@ -53,263 +78,245 @@ public class ReportsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
         websiteRepository = new WebsiteRepository(requireContext());
+        apiDateFormat.setLenient(false);
         bindViews(view);
-        seedDates();
-        bindActions(view);
-        loadExportContext();
+        bindActions();
+        loadReportContext();
         return view;
     }
 
     private void bindViews(View view) {
         plantText = view.findViewById(R.id.tv_export_plant_name);
-        hintText = view.findViewById(R.id.tv_export_hint);
-        previewText = view.findViewById(R.id.tv_export_preview);
-        previewCountText = view.findViewById(R.id.tv_export_preview_count);
+        syncBadgeText = view.findViewById(R.id.tv_export_sync_badge);
         statusText = view.findViewById(R.id.tv_export_status);
-        locationSpinner = view.findViewById(R.id.spinner_export_location);
-        startDateEdit = view.findViewById(R.id.edit_export_start_date);
-        endDateEdit = view.findViewById(R.id.edit_export_end_date);
-        downloadButton = view.findViewById(R.id.button_download_export);
+        totalEntriesValueText = view.findViewById(R.id.tv_stat_total_entries);
+        scopeLabelText = view.findViewById(R.id.tv_stat_scope_label);
+        scopeValueText = view.findViewById(R.id.tv_stat_today_entries);
+        avgPhValueText = view.findViewById(R.id.tv_stat_avg_ph);
+        avgTdsValueText = view.findViewById(R.id.tv_stat_avg_tds);
+        rowsContainer = view.findViewById(R.id.layout_export_rows);
+        emptyStateText = view.findViewById(R.id.tv_export_empty);
+        exportButton = view.findViewById(R.id.button_download_export);
+        recordsActionText = view.findViewById(R.id.tv_records_action);
+        chipAll = view.findViewById(R.id.chip_export_all);
+        chipToday = view.findViewById(R.id.chip_export_today);
+        chipWeek = view.findViewById(R.id.chip_export_week);
+        chipMonth = view.findViewById(R.id.chip_export_month);
     }
 
-    private void seedDates() {
-        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
-        startDateEdit.setText(today);
-        endDateEdit.setText(today);
+    private void bindActions() {
+        exportButton.setOnClickListener(v -> onExportClicked());
+        recordsActionText.setOnClickListener(v -> onExportClicked());
+        chipAll.setOnClickListener(v -> selectRange(RANGE_ALL));
+        chipToday.setOnClickListener(v -> selectRange(RANGE_TODAY));
+        chipWeek.setOnClickListener(v -> selectRange(RANGE_WEEK));
+        chipMonth.setOnClickListener(v -> selectRange(RANGE_MONTH));
     }
 
-    private void bindActions(View view) {
-        MaterialButton previewButton = view.findViewById(R.id.button_prepare_export);
-        MaterialButton resetButton = view.findViewById(R.id.button_reset_export);
-
-        previewButton.setOnClickListener(v -> buildPreviewSummary());
-        resetButton.setOnClickListener(v -> resetFilters());
-        downloadButton.setOnClickListener(v -> onDownloadClicked());
-        startDateEdit.setOnClickListener(v -> showDatePicker(startDateEdit));
-        endDateEdit.setOnClickListener(v -> showDatePicker(endDateEdit));
-    }
-
-    private void loadExportContext() {
-        statusText.setText("Loading export workflow for the selected member plant...");
-        previewCountText.setText("0");
-        previewText.setText("records match your filters");
-        downloadButton.setEnabled(false);
-        websiteRepository.getCurrentUser().enqueue(new retrofit2.Callback<ApiResponse<ApiSessionData>>() {
+    private void loadReportContext() {
+        statusText.setText("Loading report data...");
+        syncBadgeText.setText("Live API");
+        exportButton.setEnabled(false);
+        websiteRepository.getCurrentUser().enqueue(new Callback<ApiResponse<ApiSessionData>>() {
             @Override
-            public void onResponse(
-                    retrofit2.Call<ApiResponse<ApiSessionData>> call,
-                    retrofit2.Response<ApiResponse<ApiSessionData>> response
-            ) {
+            public void onResponse(Call<ApiResponse<ApiSessionData>> call, Response<ApiResponse<ApiSessionData>> response) {
                 if (!isAdded()) {
                     return;
                 }
 
                 ApiResponse<ApiSessionData> body = response.body();
                 if (!response.isSuccessful() || body == null || !body.isSuccess() || body.getData() == null) {
-                    statusText.setText(body != null ? body.getReadableMessage() : "Unable to load export workflow.");
+                    statusText.setText(body != null ? body.getReadableMessage() : "Unable to load report data.");
                     return;
                 }
 
                 ApiPlant plant = getSelectedPlant(body.getData().getPlants());
                 if (plant == null) {
-                    plantText.setText("No plant selected");
-                    hintText.setText("Assign or select a plant before preparing exports.");
-                    statusText.setText("Export workflow unavailable.");
-                    previewCountText.setText("0");
-                    previewText.setText("records match your filters");
-                    bindLocations(new ArrayList<>());
+                    plantText.setText("No Plant");
+                    statusText.setText("Assign or select a plant to view reports.");
                     return;
                 }
 
                 websiteRepository.selectPlant(String.valueOf(plant.getId()), plant.getPlantName());
-                plantText.setText(plant.getCompanyName() + " / " + plant.getPlantName());
-                hintText.setText("Match the website export flow: choose dates, location, preview the record scope, then download CSV.");
-                loadLocations();
-                loadDashboardPreview();
+                plantText.setText(plant.getPlantName() + " / " + plant.getCompanyName());
+                loadDashboardData();
             }
 
             @Override
-            public void onFailure(retrofit2.Call<ApiResponse<ApiSessionData>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<ApiSessionData>> call, Throwable t) {
                 if (!isAdded()) {
                     return;
                 }
                 statusText.setText(t.getMessage());
-                previewCountText.setText("0");
             }
         });
     }
 
-    private void loadLocations() {
-        websiteRepository.getPlantLocations().enqueue(new retrofit2.Callback<ApiResponse<List<ApiLocation>>>() {
+    private void loadDashboardData() {
+        websiteRepository.getDashboard().enqueue(new Callback<ApiResponse<ApiDashboardData>>() {
             @Override
-            public void onResponse(
-                    retrofit2.Call<ApiResponse<List<ApiLocation>>> call,
-                    retrofit2.Response<ApiResponse<List<ApiLocation>>> response
-            ) {
-                if (!isAdded()) {
-                    return;
-                }
-
-                ApiResponse<List<ApiLocation>> body = response.body();
-                if (!response.isSuccessful() || body == null || !body.isSuccess() || body.getData() == null) {
-                    bindLocations(new ArrayList<>());
-                    return;
-                }
-
-                bindLocations(body.getData());
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<ApiResponse<List<ApiLocation>>> call, Throwable t) {
-                if (!isAdded()) {
-                    return;
-                }
-                bindLocations(new ArrayList<>());
-            }
-        });
-    }
-
-    private void bindLocations(List<ApiLocation> data) {
-        locations.clear();
-        locations.addAll(data);
-
-        List<String> labels = new ArrayList<>();
-        labels.add("All locations");
-        for (ApiLocation location : locations) {
-            labels.add(location.getName() + " (" + location.getZoneCode() + ")");
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                requireContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                labels
-        );
-        locationSpinner.setAdapter(adapter);
-    }
-
-    private void loadDashboardPreview() {
-        websiteRepository.getDashboard().enqueue(new retrofit2.Callback<ApiResponse<ApiDashboardData>>() {
-            @Override
-            public void onResponse(
-                    retrofit2.Call<ApiResponse<ApiDashboardData>> call,
-                    retrofit2.Response<ApiResponse<ApiDashboardData>> response
-            ) {
+            public void onResponse(Call<ApiResponse<ApiDashboardData>> call, Response<ApiResponse<ApiDashboardData>> response) {
                 if (!isAdded()) {
                     return;
                 }
 
                 ApiResponse<ApiDashboardData> body = response.body();
                 if (!response.isSuccessful() || body == null || !body.isSuccess() || body.getData() == null) {
-                    previewCountText.setText("0");
-                    previewText.setText("records match your filters");
-                    statusText.setText("Export filters are ready, but live record counts could not be loaded.");
+                    statusText.setText(body != null ? body.getReadableMessage() : "Unable to load dashboard data.");
                     return;
                 }
 
-                ApiStats stats = body.getData().getStats();
-                availableRecordCount = stats != null ? stats.getTotalRecords() : 0;
-                previewCountText.setText(String.valueOf(availableRecordCount));
-                previewText.setText("records currently available for this plant");
-                downloadButton.setText(buildDownloadLabel(availableRecordCount));
-                downloadButton.setEnabled(availableRecordCount > 0);
-                statusText.setText("Filters loaded. Tap Preview to confirm scope before download.");
+                latestStats = body.getData().getStats();
+                syncBadgeText.setText("Updated . " + syncTimeFormat.format(new Date()));
+                renderOverviewStats();
+                loadRecentRows(body.getData().getRecentEntries());
             }
 
             @Override
-            public void onFailure(retrofit2.Call<ApiResponse<ApiDashboardData>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<ApiDashboardData>> call, Throwable t) {
                 if (!isAdded()) {
                     return;
                 }
-                previewCountText.setText("0");
-                previewText.setText("records match your filters");
-                downloadButton.setEnabled(false);
                 statusText.setText(t.getMessage());
             }
         });
     }
 
-    private void buildPreviewSummary() {
-        String startDate = valueOf(startDateEdit);
-        String endDate = valueOf(endDateEdit);
-        if (!isValidDate(startDate) || !isValidDate(endDate)) {
-            statusText.setText("Use YYYY-MM-DD dates before previewing.");
-            Toast.makeText(requireContext(), "Use valid dates first.", Toast.LENGTH_SHORT).show();
+    private void loadRecentRows(List<ApiDashboardEntry> entries) {
+        reportRows.clear();
+        rowsContainer.removeAllViews();
+        emptyStateText.setVisibility(View.GONE);
+
+        if (entries == null || entries.isEmpty()) {
+            renderOverviewStats();
+            renderRows();
+            statusText.setText("No recent records available for this plant.");
             return;
         }
 
-        String locationLabel = locationSpinner.getSelectedItem() == null
-                ? "All locations"
-                : locationSpinner.getSelectedItem().toString();
+        int limit = Math.min(entries.size(), 6);
+        pendingRowRequests = limit;
+        statusText.setText("Loading recent report rows...");
 
-        previewCountText.setText(String.valueOf(availableRecordCount));
-        previewText.setText(availableRecordCount == 1
-                ? "record currently matches the selected plant scope"
-                : "records currently match the selected plant scope");
-        downloadButton.setText(buildDownloadLabel(availableRecordCount));
-        downloadButton.setEnabled(availableRecordCount > 0);
-        statusText.setText(
-                "Preview ready for "
-                        + startDate
-                        + " to "
-                        + endDate
-                        + " • "
-                        + locationLabel
-        );
+        for (int i = 0; i < limit; i++) {
+            ApiDashboardEntry entry = entries.get(i);
+            final int rowIndex = i;
+            websiteRepository.getReading(String.valueOf(entry.getId())).enqueue(new Callback<ApiResponse<ApiReadingDetail>>() {
+                @Override
+                public void onResponse(Call<ApiResponse<ApiReadingDetail>> call, Response<ApiResponse<ApiReadingDetail>> response) {
+                    if (!isAdded()) {
+                        return;
+                    }
+
+                    ApiResponse<ApiReadingDetail> body = response.body();
+                    if (response.isSuccessful() && body != null && body.isSuccess() && body.getData() != null) {
+                        reportRows.add(buildRowFromDetail(rowIndex, body.getData()));
+                    } else {
+                        reportRows.add(buildFallbackRow(rowIndex, entry));
+                    }
+                    onRowLoaded();
+                }
+
+                @Override
+                public void onFailure(Call<ApiResponse<ApiReadingDetail>> call, Throwable t) {
+                    if (!isAdded()) {
+                        return;
+                    }
+                    reportRows.add(buildFallbackRow(rowIndex, entry));
+                    onRowLoaded();
+                }
+            });
+        }
     }
 
-    private void resetFilters() {
-        seedDates();
-        if (locationSpinner.getAdapter() != null && locationSpinner.getAdapter().getCount() > 0) {
-            locationSpinner.setSelection(0);
+    private void onRowLoaded() {
+        pendingRowRequests--;
+        if (pendingRowRequests > 0) {
+            return;
         }
 
-        previewCountText.setText(String.valueOf(availableRecordCount));
-        previewText.setText(availableRecordCount == 1
-                ? "record currently available for this plant"
-                : "records currently available for this plant");
-        downloadButton.setText(buildDownloadLabel(availableRecordCount));
-        downloadButton.setEnabled(availableRecordCount > 0);
-        statusText.setText("Filters reset to the website-style default range.");
+        Collections.sort(reportRows, Comparator.comparingInt(row -> row.index));
+        renderOverviewStats();
+        renderRows();
+        statusText.setText("Report view ready. Export action will use the selected range once the API route is available.");
     }
 
-    private void onDownloadClicked() {
-        if (availableRecordCount <= 0) {
-            Toast.makeText(requireContext(), "No records available to export.", Toast.LENGTH_SHORT).show();
+    private void selectRange(String range) {
+        selectedRange = range;
+        updateChipStyles();
+        renderOverviewStats();
+        renderRows();
+    }
+
+    private void updateChipStyles() {
+        styleChip(chipAll, RANGE_ALL.equals(selectedRange));
+        styleChip(chipToday, RANGE_TODAY.equals(selectedRange));
+        styleChip(chipWeek, RANGE_WEEK.equals(selectedRange));
+        styleChip(chipMonth, RANGE_MONTH.equals(selectedRange));
+    }
+
+    private void styleChip(TextView chip, boolean active) {
+        chip.setBackgroundResource(active ? R.drawable.bg_chip_active : R.drawable.bg_chip_inactive);
+        chip.setTextColor(ContextCompat.getColor(requireContext(), active ? android.R.color.white : R.color.text_muted));
+    }
+
+    private void renderOverviewStats() {
+        int totalEntries = latestStats != null ? latestStats.getTotalRecords() : 0;
+        totalEntriesValueText.setText(String.valueOf(totalEntries));
+
+        scopeLabelText.setText(getScopeLabel());
+        scopeValueText.setText(String.valueOf(getScopeCount()));
+
+        List<ReportRow> filteredRows = getFilteredRows();
+        avgPhValueText.setText(formatAverage(extractAverage(filteredRows, true)));
+        avgTdsValueText.setText(formatAverage(extractAverage(filteredRows, false)));
+
+        exportButton.setEnabled(getScopeCount() > 0);
+        exportButton.setText("Export");
+    }
+
+    private void renderRows() {
+        rowsContainer.removeAllViews();
+        List<ReportRow> filteredRows = getFilteredRows();
+        if (filteredRows.isEmpty()) {
+            emptyStateText.setVisibility(View.VISIBLE);
+            emptyStateText.setText("No records available for " + getReadableRange().toLowerCase(Locale.US) + ".");
+            return;
+        }
+
+        emptyStateText.setVisibility(View.GONE);
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        for (ReportRow row : filteredRows) {
+            View rowView = inflater.inflate(R.layout.include_report_record_row, rowsContainer, false);
+            TextView dateText = rowView.findViewById(R.id.tv_row_date);
+            TextView locationText = rowView.findViewById(R.id.tv_row_location);
+            TextView phText = rowView.findViewById(R.id.tv_row_ph);
+            TextView tdsText = rowView.findViewById(R.id.tv_row_tds);
+            TextView statusRowText = rowView.findViewById(R.id.tv_row_status);
+
+            dateText.setText(row.displayDate);
+            locationText.setText(row.location);
+            phText.setText(row.phText);
+            tdsText.setText(row.tdsText);
+            statusRowText.setText("SYNCED");
+
+            rowsContainer.addView(rowView);
+        }
+    }
+
+    private void onExportClicked() {
+        int count = getScopeCount();
+        if (count <= 0) {
+            Toast.makeText(requireContext(), "No rows available for export.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         Toast.makeText(
                 requireContext(),
-                "CSV download needs a dedicated API endpoint. The app flow is ready.",
+                "Export UI is ready. Backend CSV API is still needed for " + getReadableRange().toLowerCase(Locale.US) + ".",
                 Toast.LENGTH_LONG
         ).show();
-        statusText.setText("CSV button is ready in the UI, but the backend still needs a JWT export endpoint.");
-    }
-
-    private void showDatePicker(EditText target) {
-        Calendar calendar = Calendar.getInstance();
-        String currentValue = valueOf(target);
-        if (isValidDate(currentValue)) {
-            String[] parts = currentValue.split("-");
-            calendar.set(Calendar.YEAR, Integer.parseInt(parts[0]));
-            calendar.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
-            calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[2]));
-        }
-
-        DatePickerDialog dialog = new DatePickerDialog(
-                requireContext(),
-                (view, year, month, dayOfMonth) -> target.setText(String.format(
-                        Locale.US,
-                        "%04d-%02d-%02d",
-                        year,
-                        month + 1,
-                        dayOfMonth
-                )),
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-        );
-        dialog.show();
+        statusText.setText("Export button is mapped to the selected range, but the backend CSV route is still pending.");
     }
 
     private ApiPlant getSelectedPlant(List<ApiPlant> plants) {
@@ -329,26 +336,221 @@ public class ReportsFragment extends Fragment {
         return plants.get(0);
     }
 
-    private String valueOf(EditText editText) {
-        return editText.getText() == null ? "" : editText.getText().toString().trim();
+    private ReportRow buildRowFromDetail(int index, ApiReadingDetail detail) {
+        return new ReportRow(
+                index,
+                detail.getReadingDate(),
+                formatDate(detail.getReadingDate()),
+                valueOrFallback(detail.getLocationName(), "-"),
+                formatNumber(findMetricValue(detail.getValues(), "ph")),
+                formatInteger(findMetricValue(detail.getValues(), "tds"))
+        );
     }
 
-    private String buildDownloadLabel(int count) {
-        return count == 1 ? "Download CSV (1 record)" : "Download CSV (" + count + " records)";
+    private ReportRow buildFallbackRow(int index, ApiDashboardEntry entry) {
+        return new ReportRow(
+                index,
+                entry.getReadingDate(),
+                formatDate(entry.getReadingDate()),
+                valueOrFallback(entry.getLocation(), "-"),
+                "--",
+                "--"
+        );
     }
 
-    private boolean isValidDate(String value) {
-        if (TextUtils.isEmpty(value) || !value.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
-            return false;
+    private double findMetricValue(List<ApiReadingValue> values, String key) {
+        if (values == null) {
+            return Double.NaN;
+        }
+
+        for (ApiReadingValue value : values) {
+            String name = value.getParameterName();
+            if (name != null && name.toLowerCase(Locale.US).contains(key.toLowerCase(Locale.US))) {
+                return value.getValue();
+            }
+        }
+        return Double.NaN;
+    }
+
+    private List<ReportRow> getFilteredRows() {
+        if (reportRows.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        if (RANGE_ALL.equals(selectedRange)) {
+            return new ArrayList<>(reportRows);
+        }
+
+        List<ReportRow> filtered = new ArrayList<>();
+        Calendar now = Calendar.getInstance();
+        for (ReportRow row : reportRows) {
+            Date parsedDate = parseApiDate(row.rawDate);
+            if (parsedDate == null) {
+                if (RANGE_ALL.equals(selectedRange)) {
+                    filtered.add(row);
+                }
+                continue;
+            }
+
+            Calendar rowCal = Calendar.getInstance();
+            rowCal.setTime(parsedDate);
+            if (RANGE_TODAY.equals(selectedRange) && isSameDay(now, rowCal)) {
+                filtered.add(row);
+            } else if (RANGE_WEEK.equals(selectedRange) && isWithinLastSevenDays(now, rowCal)) {
+                filtered.add(row);
+            } else if (RANGE_MONTH.equals(selectedRange)
+                    && now.get(Calendar.YEAR) == rowCal.get(Calendar.YEAR)
+                    && now.get(Calendar.MONTH) == rowCal.get(Calendar.MONTH)) {
+                filtered.add(row);
+            }
+        }
+        return filtered;
+    }
+
+    private boolean isSameDay(Calendar first, Calendar second) {
+        return first.get(Calendar.YEAR) == second.get(Calendar.YEAR)
+                && first.get(Calendar.DAY_OF_YEAR) == second.get(Calendar.DAY_OF_YEAR);
+    }
+
+    private boolean isWithinLastSevenDays(Calendar now, Calendar row) {
+        Calendar start = (Calendar) now.clone();
+        start.add(Calendar.DAY_OF_YEAR, -6);
+        zeroTime(start);
+        Calendar candidate = (Calendar) row.clone();
+        zeroTime(candidate);
+        Calendar end = (Calendar) now.clone();
+        zeroTime(end);
+        return !candidate.before(start) && !candidate.after(end);
+    }
+
+    private void zeroTime(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+    }
+
+    private int getScopeCount() {
+        if (latestStats == null) {
+            return getFilteredRows().size();
+        }
+
+        switch (selectedRange) {
+            case RANGE_TODAY:
+                return latestStats.getTodayEntries();
+            case RANGE_WEEK:
+                return latestStats.getWeekEntries();
+            case RANGE_MONTH:
+                return getFilteredRows().size();
+            case RANGE_ALL:
+            default:
+                return latestStats.getTotalRecords();
+        }
+    }
+
+    private String getScopeLabel() {
+        switch (selectedRange) {
+            case RANGE_TODAY:
+                return "TODAY COUNT";
+            case RANGE_WEEK:
+                return "WEEK COUNT";
+            case RANGE_MONTH:
+                return "MONTH ROWS";
+            case RANGE_ALL:
+            default:
+                return "CURRENT FILTER";
+        }
+    }
+
+    private String getReadableRange() {
+        switch (selectedRange) {
+            case RANGE_TODAY:
+                return "Today";
+            case RANGE_WEEK:
+                return "This Week";
+            case RANGE_MONTH:
+                return "This Month";
+            case RANGE_ALL:
+            default:
+                return "All Records";
+        }
+    }
+
+    private double extractAverage(List<ReportRow> rows, boolean phMetric) {
+        double total = 0;
+        int count = 0;
+        for (ReportRow row : rows) {
+            String value = phMetric ? row.phText : row.tdsText;
+            if ("--".equals(value)) {
+                continue;
+            }
+            try {
+                total += Double.parseDouble(value);
+                count++;
+            } catch (NumberFormatException ignored) {
+                // Ignore malformed value.
+            }
+        }
+        return count == 0 ? Double.NaN : total / count;
+    }
+
+    private String formatAverage(double value) {
+        if (Double.isNaN(value)) {
+            return "--";
+        }
+        return value >= 100 ? String.valueOf((int) Math.round(value)) : String.format(Locale.US, "%.1f", value);
+    }
+
+    private String formatNumber(double value) {
+        if (Double.isNaN(value)) {
+            return "--";
+        }
+        return String.format(Locale.US, "%.1f", value);
+    }
+
+    private String formatInteger(double value) {
+        if (Double.isNaN(value)) {
+            return "--";
+        }
+        return String.valueOf((int) Math.round(value));
+    }
+
+    private Date parseApiDate(String rawDate) {
+        if (rawDate == null || rawDate.trim().isEmpty()) {
+            return null;
         }
 
         try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-            format.setLenient(false);
-            format.parse(value);
-            return true;
-        } catch (Exception ignored) {
-            return false;
+            return apiDateFormat.parse(rawDate);
+        } catch (ParseException ignored) {
+            return null;
+        }
+    }
+
+    private String formatDate(String rawDate) {
+        Date parsed = parseApiDate(rawDate);
+        return parsed == null ? "--" : shortDateFormat.format(parsed);
+    }
+
+    private String valueOrFallback(String value, String fallback) {
+        return value == null || value.trim().isEmpty() ? fallback : value.trim();
+    }
+
+    private static class ReportRow {
+        final int index;
+        final String rawDate;
+        final String displayDate;
+        final String location;
+        final String phText;
+        final String tdsText;
+
+        ReportRow(int index, String rawDate, String displayDate, String location, String phText, String tdsText) {
+            this.index = index;
+            this.rawDate = rawDate;
+            this.displayDate = displayDate;
+            this.location = location;
+            this.phText = phText;
+            this.tdsText = tdsText;
         }
     }
 }

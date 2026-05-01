@@ -60,12 +60,20 @@
         "source": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-main-33:/drawable/ic_nav_reports.xml"
     },
     {
+        "merged": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-debug-31:/layout_include_profile_module_chip.xml.flat",
+        "source": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-main-33:/layout/include_profile_module_chip.xml"
+    },
+    {
         "merged": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-debug-31:/drawable_bg_input.xml.flat",
         "source": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-main-33:/drawable/bg_input.xml"
     },
     {
         "merged": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-debug-31:/drawable_bg_icon_circle_red.xml.flat",
         "source": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-main-33:/drawable/bg_icon_circle_red.xml"
+    },
+    {
+        "merged": "com.labdigitiser.app-debug-31:/drawable_ic_logout_small.xml.flat",
+        "source": "com.labdigitiser.app-main-33:/drawable/ic_logout_small.xml"
     },
     {
         "merged": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-debug-31:/layout_fragment_home.xml.flat",
@@ -128,8 +136,8 @@
         "source": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-main-33:/drawable/bg_table_status_pending.xml"
     },
     {
-        "merged": "com.labdigitiser.app-debug-31:/layout_fragment_reports.xml.flat",
-        "source": "com.labdigitiser.app-main-33:/layout/fragment_reports.xml"
+        "merged": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-debug-31:/drawable_bg_logout_outline.xml.flat",
+        "source": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-main-33:/drawable/bg_logout_outline.xml"
     },
     {
         "merged": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-debug-31:/layout_include_sheet_row_two.xml.flat",
@@ -188,6 +196,10 @@
         "source": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-main-33:/layout/include_value_row_tss.xml"
     },
     {
+        "merged": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-debug-31:/layout_include_report_record_row.xml.flat",
+        "source": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-main-33:/layout/include_report_record_row.xml"
+    },
+    {
         "merged": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-debug-31:/drawable_ic_eye_outline.xml.flat",
         "source": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-main-33:/drawable/ic_eye_outline.xml"
     },
@@ -238,6 +250,10 @@
     {
         "merged": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-debug-31:/drawable_ic_user_outline.xml.flat",
         "source": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-main-33:/drawable/ic_user_outline.xml"
+    },
+    {
+        "merged": "com.labdigitiser.app-debug-31:/layout_fragment_profile.xml.flat",
+        "source": "com.labdigitiser.app-main-33:/layout/fragment_profile.xml"
     },
     {
         "merged": "/Users/mactm/.gradle/daemon/8.7/com.labdigitiser.app-debug-31:/layout_fragment_reports.xml.flat",

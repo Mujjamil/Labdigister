@@ -4,8 +4,7 @@ package com.labdigitiser.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,58 +25,76 @@ public final class FragmentReportsBinding implements ViewBinding {
   public final MaterialButton buttonDownloadExport;
 
   @NonNull
-  public final MaterialButton buttonPrepareExport;
+  public final TextView chipExportAll;
 
   @NonNull
-  public final MaterialButton buttonResetExport;
+  public final TextView chipExportMonth;
 
   @NonNull
-  public final EditText editExportEndDate;
+  public final TextView chipExportToday;
 
   @NonNull
-  public final EditText editExportStartDate;
+  public final TextView chipExportWeek;
 
   @NonNull
-  public final Spinner spinnerExportLocation;
+  public final LinearLayout layoutExportRows;
 
   @NonNull
-  public final TextView tvExportColumns;
-
-  @NonNull
-  public final TextView tvExportHint;
+  public final TextView tvExportEmpty;
 
   @NonNull
   public final TextView tvExportPlantName;
 
   @NonNull
-  public final TextView tvExportPreview;
-
-  @NonNull
-  public final TextView tvExportPreviewCount;
-
-  @NonNull
   public final TextView tvExportStatus;
 
+  @NonNull
+  public final TextView tvExportSyncBadge;
+
+  @NonNull
+  public final TextView tvRecordsAction;
+
+  @NonNull
+  public final TextView tvStatAvgPh;
+
+  @NonNull
+  public final TextView tvStatAvgTds;
+
+  @NonNull
+  public final TextView tvStatScopeLabel;
+
+  @NonNull
+  public final TextView tvStatTodayEntries;
+
+  @NonNull
+  public final TextView tvStatTotalEntries;
+
   private FragmentReportsBinding(@NonNull NestedScrollView rootView,
-      @NonNull MaterialButton buttonDownloadExport, @NonNull MaterialButton buttonPrepareExport,
-      @NonNull MaterialButton buttonResetExport, @NonNull EditText editExportEndDate,
-      @NonNull EditText editExportStartDate, @NonNull Spinner spinnerExportLocation,
-      @NonNull TextView tvExportColumns, @NonNull TextView tvExportHint,
-      @NonNull TextView tvExportPlantName, @NonNull TextView tvExportPreview,
-      @NonNull TextView tvExportPreviewCount, @NonNull TextView tvExportStatus) {
+      @NonNull MaterialButton buttonDownloadExport, @NonNull TextView chipExportAll,
+      @NonNull TextView chipExportMonth, @NonNull TextView chipExportToday,
+      @NonNull TextView chipExportWeek, @NonNull LinearLayout layoutExportRows,
+      @NonNull TextView tvExportEmpty, @NonNull TextView tvExportPlantName,
+      @NonNull TextView tvExportStatus, @NonNull TextView tvExportSyncBadge,
+      @NonNull TextView tvRecordsAction, @NonNull TextView tvStatAvgPh,
+      @NonNull TextView tvStatAvgTds, @NonNull TextView tvStatScopeLabel,
+      @NonNull TextView tvStatTodayEntries, @NonNull TextView tvStatTotalEntries) {
     this.rootView = rootView;
     this.buttonDownloadExport = buttonDownloadExport;
-    this.buttonPrepareExport = buttonPrepareExport;
-    this.buttonResetExport = buttonResetExport;
-    this.editExportEndDate = editExportEndDate;
-    this.editExportStartDate = editExportStartDate;
-    this.spinnerExportLocation = spinnerExportLocation;
-    this.tvExportColumns = tvExportColumns;
-    this.tvExportHint = tvExportHint;
+    this.chipExportAll = chipExportAll;
+    this.chipExportMonth = chipExportMonth;
+    this.chipExportToday = chipExportToday;
+    this.chipExportWeek = chipExportWeek;
+    this.layoutExportRows = layoutExportRows;
+    this.tvExportEmpty = tvExportEmpty;
     this.tvExportPlantName = tvExportPlantName;
-    this.tvExportPreview = tvExportPreview;
-    this.tvExportPreviewCount = tvExportPreviewCount;
     this.tvExportStatus = tvExportStatus;
+    this.tvExportSyncBadge = tvExportSyncBadge;
+    this.tvRecordsAction = tvRecordsAction;
+    this.tvStatAvgPh = tvStatAvgPh;
+    this.tvStatAvgTds = tvStatAvgTds;
+    this.tvStatScopeLabel = tvStatScopeLabel;
+    this.tvStatTodayEntries = tvStatTodayEntries;
+    this.tvStatTotalEntries = tvStatTotalEntries;
   }
 
   @Override
@@ -113,45 +130,39 @@ public final class FragmentReportsBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.button_prepare_export;
-      MaterialButton buttonPrepareExport = ViewBindings.findChildViewById(rootView, id);
-      if (buttonPrepareExport == null) {
+      id = R.id.chip_export_all;
+      TextView chipExportAll = ViewBindings.findChildViewById(rootView, id);
+      if (chipExportAll == null) {
         break missingId;
       }
 
-      id = R.id.button_reset_export;
-      MaterialButton buttonResetExport = ViewBindings.findChildViewById(rootView, id);
-      if (buttonResetExport == null) {
+      id = R.id.chip_export_month;
+      TextView chipExportMonth = ViewBindings.findChildViewById(rootView, id);
+      if (chipExportMonth == null) {
         break missingId;
       }
 
-      id = R.id.edit_export_end_date;
-      EditText editExportEndDate = ViewBindings.findChildViewById(rootView, id);
-      if (editExportEndDate == null) {
+      id = R.id.chip_export_today;
+      TextView chipExportToday = ViewBindings.findChildViewById(rootView, id);
+      if (chipExportToday == null) {
         break missingId;
       }
 
-      id = R.id.edit_export_start_date;
-      EditText editExportStartDate = ViewBindings.findChildViewById(rootView, id);
-      if (editExportStartDate == null) {
+      id = R.id.chip_export_week;
+      TextView chipExportWeek = ViewBindings.findChildViewById(rootView, id);
+      if (chipExportWeek == null) {
         break missingId;
       }
 
-      id = R.id.spinner_export_location;
-      Spinner spinnerExportLocation = ViewBindings.findChildViewById(rootView, id);
-      if (spinnerExportLocation == null) {
+      id = R.id.layout_export_rows;
+      LinearLayout layoutExportRows = ViewBindings.findChildViewById(rootView, id);
+      if (layoutExportRows == null) {
         break missingId;
       }
 
-      id = R.id.tv_export_columns;
-      TextView tvExportColumns = ViewBindings.findChildViewById(rootView, id);
-      if (tvExportColumns == null) {
-        break missingId;
-      }
-
-      id = R.id.tv_export_hint;
-      TextView tvExportHint = ViewBindings.findChildViewById(rootView, id);
-      if (tvExportHint == null) {
+      id = R.id.tv_export_empty;
+      TextView tvExportEmpty = ViewBindings.findChildViewById(rootView, id);
+      if (tvExportEmpty == null) {
         break missingId;
       }
 
@@ -161,28 +172,58 @@ public final class FragmentReportsBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.tv_export_preview;
-      TextView tvExportPreview = ViewBindings.findChildViewById(rootView, id);
-      if (tvExportPreview == null) {
-        break missingId;
-      }
-
-      id = R.id.tv_export_preview_count;
-      TextView tvExportPreviewCount = ViewBindings.findChildViewById(rootView, id);
-      if (tvExportPreviewCount == null) {
-        break missingId;
-      }
-
       id = R.id.tv_export_status;
       TextView tvExportStatus = ViewBindings.findChildViewById(rootView, id);
       if (tvExportStatus == null) {
         break missingId;
       }
 
+      id = R.id.tv_export_sync_badge;
+      TextView tvExportSyncBadge = ViewBindings.findChildViewById(rootView, id);
+      if (tvExportSyncBadge == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_records_action;
+      TextView tvRecordsAction = ViewBindings.findChildViewById(rootView, id);
+      if (tvRecordsAction == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_stat_avg_ph;
+      TextView tvStatAvgPh = ViewBindings.findChildViewById(rootView, id);
+      if (tvStatAvgPh == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_stat_avg_tds;
+      TextView tvStatAvgTds = ViewBindings.findChildViewById(rootView, id);
+      if (tvStatAvgTds == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_stat_scope_label;
+      TextView tvStatScopeLabel = ViewBindings.findChildViewById(rootView, id);
+      if (tvStatScopeLabel == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_stat_today_entries;
+      TextView tvStatTodayEntries = ViewBindings.findChildViewById(rootView, id);
+      if (tvStatTodayEntries == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_stat_total_entries;
+      TextView tvStatTotalEntries = ViewBindings.findChildViewById(rootView, id);
+      if (tvStatTotalEntries == null) {
+        break missingId;
+      }
+
       return new FragmentReportsBinding((NestedScrollView) rootView, buttonDownloadExport,
-          buttonPrepareExport, buttonResetExport, editExportEndDate, editExportStartDate,
-          spinnerExportLocation, tvExportColumns, tvExportHint, tvExportPlantName, tvExportPreview,
-          tvExportPreviewCount, tvExportStatus);
+          chipExportAll, chipExportMonth, chipExportToday, chipExportWeek, layoutExportRows,
+          tvExportEmpty, tvExportPlantName, tvExportStatus, tvExportSyncBadge, tvRecordsAction,
+          tvStatAvgPh, tvStatAvgTds, tvStatScopeLabel, tvStatTodayEntries, tvStatTotalEntries);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
