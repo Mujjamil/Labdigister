@@ -50,83 +50,87 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_surface_card"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="18dp">
 
                 <TextView
                     style="@style/SectionTitle"
-                    android:text="EXPORT WORKFLOW" />
+                    android:text="EXPORT DATA" />
 
                 <TextView
                     android:id="@+id/tv_export_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Choose dates and location to match the website filter flow."
+                    android:layout_marginTop="10dp"
+                    android:text="Choose date range and location, preview matching records, then download CSV."
                     android:textColor="@color/text_muted"
                     android:textSize="14sp" />
 
-                <TextView
-                    style="@style/LabelText"
-                    android:layout_marginTop="16dp"
-                    android:text="START DATE" />
-
-                <EditText
-                    android:id="@+id/edit_export_start_date"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_input_small"
-                    android:hint="YYYY-MM-DD"
-                    android:paddingHorizontal="14dp"
-                    android:paddingVertical="12dp"
-                    android:textColor="@color/text_dark"
-                    android:textColorHint="@color/text_hint" />
+                    android:layout_marginTop="18dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    style="@style/LabelText"
-                    android:layout_marginTop="16dp"
-                    android:text="END DATE" />
+                    <TextView
+                        style="@style/LabelText"
+                        android:text="FROM DATE" />
 
-                <EditText
-                    android:id="@+id/edit_export_end_date"
+                    <EditText
+                        android:id="@+id/edit_export_start_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_input_small"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="YYYY-MM-DD"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="12dp"
+                        android:textColor="@color/text_dark"
+                        android:textColorHint="@color/text_hint" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_input_small"
-                    android:hint="YYYY-MM-DD"
-                    android:paddingHorizontal="14dp"
-                    android:paddingVertical="12dp"
-                    android:textColor="@color/text_dark"
-                    android:textColorHint="@color/text_hint" />
+                    android:layout_marginTop="14dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    style="@style/LabelText"
-                    android:layout_marginTop="16dp"
-                    android:text="LOCATION" />
+                    <TextView
+                        style="@style/LabelText"
+                        android:text="TO DATE" />
 
-                <Spinner
-                    android:id="@+id/spinner_export_location"
+                    <EditText
+                        android:id="@+id/edit_export_end_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_input_small"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="YYYY-MM-DD"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="12dp"
+                        android:textColor="@color/text_dark"
+                        android:textColorHint="@color/text_hint" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="14dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_export_preview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Preview count will appear here."
-                    android:textColor="@color/text_dark"
-                    android:textSize="14sp" />
+                    <TextView
+                        style="@style/LabelText"
+                        android:text="LOCATION" />
 
-                <TextView
-                    android:id="@+id/tv_export_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Loading export workflow..."
-                    android:textColor="@color/text_muted"
-                    android:textSize="13sp" />
+                    <Spinner
+                        android:id="@+id/spinner_export_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -136,24 +140,83 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_refresh_export"
-                        style="@style/Widget.LabDigitiser.OutlineButton"
+                        android:id="@+id/button_prepare_export"
+                        style="@style/Widget.LabDigitiser.PrimaryButton"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
-                        android:text="Reload" />
+                        android:text="Preview" />
 
                     <Space
                         android:layout_width="12dp"
                         android:layout_height="1dp" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_prepare_export"
-                        style="@style/Widget.LabDigitiser.PrimaryButton"
+                        android:id="@+id/button_reset_export"
+                        style="@style/Widget.LabDigitiser.OutlineButton"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
-                        android:text="Preview Filters" />
+                        android:text="Reset" />
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_surface_card"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:id="@+id/tv_export_preview_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="@color/brand_green"
+                    android:textSize="42sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_export_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="records match your filters"
+                    android:textColor="@color/text_muted"
+                    android:textSize="16sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_download_export"
+                    style="@style/Widget.LabDigitiser.PrimaryButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="52dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="22dp"
+                    android:text="Download CSV"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:id="@+id/tv_export_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center"
+                    android:text="Loading export workflow..."
+                    android:textColor="@color/text_muted"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_export_columns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="12dp"
+                android:text="CSV columns: Record ID, Company, Plant, Location, Zone Label, Zone Code, Date, Time, Shift, Submitted By + one column per parameter."
+                android:textColor="@color/text_muted"
+                android:textSize="13sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

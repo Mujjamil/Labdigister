@@ -78,10 +78,11 @@ drawable ic_nav_reports
 drawable ic_user_outline
 font plus_jakarta_sans
 id bottom_nav
+id button_download_export
 id button_logout
 id button_prepare_export
-id button_refresh_export
 id button_reload_entry_data
+id button_reset_export
 id button_step1_next
 id button_step2_back
 id button_step2_next
@@ -153,9 +154,11 @@ id tv_entry_status
 id tv_entry_step_indicator
 id tv_entry_summary
 id tv_entry_zone
+id tv_export_columns
 id tv_export_hint
 id tv_export_plant_name
 id tv_export_preview
+id tv_export_preview_count
 id tv_export_status
 id tv_plant_name
 id tv_primary_module_description

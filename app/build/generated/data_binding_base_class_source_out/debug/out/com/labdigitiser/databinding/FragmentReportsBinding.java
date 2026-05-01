@@ -23,10 +23,13 @@ public final class FragmentReportsBinding implements ViewBinding {
   private final NestedScrollView rootView;
 
   @NonNull
+  public final MaterialButton buttonDownloadExport;
+
+  @NonNull
   public final MaterialButton buttonPrepareExport;
 
   @NonNull
-  public final MaterialButton buttonRefreshExport;
+  public final MaterialButton buttonResetExport;
 
   @NonNull
   public final EditText editExportEndDate;
@@ -38,6 +41,9 @@ public final class FragmentReportsBinding implements ViewBinding {
   public final Spinner spinnerExportLocation;
 
   @NonNull
+  public final TextView tvExportColumns;
+
+  @NonNull
   public final TextView tvExportHint;
 
   @NonNull
@@ -47,23 +53,30 @@ public final class FragmentReportsBinding implements ViewBinding {
   public final TextView tvExportPreview;
 
   @NonNull
+  public final TextView tvExportPreviewCount;
+
+  @NonNull
   public final TextView tvExportStatus;
 
   private FragmentReportsBinding(@NonNull NestedScrollView rootView,
-      @NonNull MaterialButton buttonPrepareExport, @NonNull MaterialButton buttonRefreshExport,
-      @NonNull EditText editExportEndDate, @NonNull EditText editExportStartDate,
-      @NonNull Spinner spinnerExportLocation, @NonNull TextView tvExportHint,
+      @NonNull MaterialButton buttonDownloadExport, @NonNull MaterialButton buttonPrepareExport,
+      @NonNull MaterialButton buttonResetExport, @NonNull EditText editExportEndDate,
+      @NonNull EditText editExportStartDate, @NonNull Spinner spinnerExportLocation,
+      @NonNull TextView tvExportColumns, @NonNull TextView tvExportHint,
       @NonNull TextView tvExportPlantName, @NonNull TextView tvExportPreview,
-      @NonNull TextView tvExportStatus) {
+      @NonNull TextView tvExportPreviewCount, @NonNull TextView tvExportStatus) {
     this.rootView = rootView;
+    this.buttonDownloadExport = buttonDownloadExport;
     this.buttonPrepareExport = buttonPrepareExport;
-    this.buttonRefreshExport = buttonRefreshExport;
+    this.buttonResetExport = buttonResetExport;
     this.editExportEndDate = editExportEndDate;
     this.editExportStartDate = editExportStartDate;
     this.spinnerExportLocation = spinnerExportLocation;
+    this.tvExportColumns = tvExportColumns;
     this.tvExportHint = tvExportHint;
     this.tvExportPlantName = tvExportPlantName;
     this.tvExportPreview = tvExportPreview;
+    this.tvExportPreviewCount = tvExportPreviewCount;
     this.tvExportStatus = tvExportStatus;
   }
 
@@ -94,15 +107,21 @@ public final class FragmentReportsBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.button_download_export;
+      MaterialButton buttonDownloadExport = ViewBindings.findChildViewById(rootView, id);
+      if (buttonDownloadExport == null) {
+        break missingId;
+      }
+
       id = R.id.button_prepare_export;
       MaterialButton buttonPrepareExport = ViewBindings.findChildViewById(rootView, id);
       if (buttonPrepareExport == null) {
         break missingId;
       }
 
-      id = R.id.button_refresh_export;
-      MaterialButton buttonRefreshExport = ViewBindings.findChildViewById(rootView, id);
-      if (buttonRefreshExport == null) {
+      id = R.id.button_reset_export;
+      MaterialButton buttonResetExport = ViewBindings.findChildViewById(rootView, id);
+      if (buttonResetExport == null) {
         break missingId;
       }
 
@@ -124,6 +143,12 @@ public final class FragmentReportsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tv_export_columns;
+      TextView tvExportColumns = ViewBindings.findChildViewById(rootView, id);
+      if (tvExportColumns == null) {
+        break missingId;
+      }
+
       id = R.id.tv_export_hint;
       TextView tvExportHint = ViewBindings.findChildViewById(rootView, id);
       if (tvExportHint == null) {
@@ -142,15 +167,22 @@ public final class FragmentReportsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tv_export_preview_count;
+      TextView tvExportPreviewCount = ViewBindings.findChildViewById(rootView, id);
+      if (tvExportPreviewCount == null) {
+        break missingId;
+      }
+
       id = R.id.tv_export_status;
       TextView tvExportStatus = ViewBindings.findChildViewById(rootView, id);
       if (tvExportStatus == null) {
         break missingId;
       }
 
-      return new FragmentReportsBinding((NestedScrollView) rootView, buttonPrepareExport,
-          buttonRefreshExport, editExportEndDate, editExportStartDate, spinnerExportLocation,
-          tvExportHint, tvExportPlantName, tvExportPreview, tvExportStatus);
+      return new FragmentReportsBinding((NestedScrollView) rootView, buttonDownloadExport,
+          buttonPrepareExport, buttonResetExport, editExportEndDate, editExportStartDate,
+          spinnerExportLocation, tvExportColumns, tvExportHint, tvExportPlantName, tvExportPreview,
+          tvExportPreviewCount, tvExportStatus);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
