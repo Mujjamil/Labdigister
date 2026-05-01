@@ -1,5 +1,6 @@
 package com.labdigitiser.network.model;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class ApiLoginData {
     private String token_type;
     private int expires_in;
     private ApiUser user;
-    private JsonObject permissions;
+    private JsonElement permissions;
     private List<ApiPlant> plants;
 
     public String getToken() {
@@ -29,8 +30,12 @@ public class ApiLoginData {
         return user;
     }
 
-    public JsonObject getPermissions() {
+    public JsonElement getPermissions() {
         return permissions;
+    }
+
+    public JsonObject getPermissionsObject() {
+        return permissions != null && permissions.isJsonObject() ? permissions.getAsJsonObject() : null;
     }
 
     public List<ApiPlant> getPlants() {

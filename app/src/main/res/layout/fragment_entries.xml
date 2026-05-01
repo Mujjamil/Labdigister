@@ -32,6 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Member Entry Wizard"
+                    android:textStyle="bold"
                     android:textColor="@android:color/white"
                     android:textSize="22sp" />
 
@@ -81,7 +82,8 @@
 
                 <TextView
                     style="@style/LabelText"
-                    android:text="CURRENT MEMBER" />
+                    android:text="CURRENT MEMBER"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tv_entry_member_name"
@@ -118,7 +120,8 @@
                 <TextView
                     style="@style/LabelText"
                     android:layout_marginTop="16dp"
-                    android:text="PLANT" />
+                    android:text="PLANT"
+                    android:textStyle="bold"/>
 
                 <Spinner
                     android:id="@+id/spinner_plants"
@@ -129,7 +132,8 @@
                 <TextView
                     style="@style/LabelText"
                     android:layout_marginTop="16dp"
-                    android:text="LOCATION" />
+                    android:text="LOCATION"
+                    android:textStyle="bold"/>
 
                 <Spinner
                     android:id="@+id/spinner_locations"
@@ -140,7 +144,8 @@
                 <TextView
                     style="@style/LabelText"
                     android:layout_marginTop="16dp"
-                    android:text="ZONE" />
+                    android:text="ZONE"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tv_entry_zone"
@@ -163,7 +168,8 @@
                         style="@style/Widget.LabDigitiser.PrimaryButton"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
-                        android:text="Next" />
+                        android:text="Next"
+                        android:textStyle="bold"/>
                 </LinearLayout>
             </LinearLayout>
 
