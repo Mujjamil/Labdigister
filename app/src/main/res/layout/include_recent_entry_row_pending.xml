@@ -23,7 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Raw Water Inlet"
-            android:textStyle="bold"
+            android:fontFamily="@font/plusjakartasans_extrabold"
+
             android:textColor="@color/text_dark"
             android:textSize="16sp" />
         <TextView
@@ -32,6 +33,7 @@
             android:layout_height="wrap_content"
             android:text="Today, 07:30 AM"
             android:textColor="@color/text_muted"
+            android:fontFamily="@font/plus_jakarta_sans"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -40,10 +42,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_table_status_pending"
+        android:fontFamily="@font/plusjakartasans_extrabold"
         android:paddingHorizontal="12dp"
         android:paddingVertical="4dp"
         android:text="Pending"
-        android:textStyle="bold"
         android:textColor="@color/status_pending"
-        android:textSize="11sp" />
+        android:textSize="11sp"
+        android:textStyle="bold" />
 </LinearLayout>

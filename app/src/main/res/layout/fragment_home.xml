@@ -32,9 +32,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
+                    android:fontFamily="@font/plus_jakarta_sans"
                     android:letterSpacing="0.08"
                     android:text="GOOD MORNING,"
+                    android:textStyle="bold"
+
                     android:textAllCaps="true"
                     android:textColor="@color/header_label"
                     android:textSize="10sp" />
@@ -44,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:id="@+id/tv_user_name"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/plusjakartasans_extrabold"
                     android:text="Aditya Kulkarni"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />
@@ -83,6 +85,7 @@
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
                 android:text="PLANT: MIDC UNIT - PUNE"
+                android:fontFamily="@font/plus_jakarta_sans"
                 android:textStyle="bold"
                 android:textColor="@color/brand_green"
                 android:textSize="11sp" />
@@ -99,6 +102,8 @@
                     style="@style/SectionTitle"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    android:textStyle="bold"
                     android:text="ASSIGNED PLANTS" />
 
                 <TextView
@@ -133,11 +138,11 @@
                         android:background="@drawable/bg_icon_circle_light">
 
                         <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_gravity="center"
-                            android:src="@android:drawable/ic_lock_lock"
-                            android:tint="@color/brand_green" />
+                            android:src="@drawable/shield"
+                            android:tint="@color/brand_green"/>
                     </FrameLayout>
 
                     <TextView
@@ -146,14 +151,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="Bio WRP"
+                        android:fontFamily="@font/plusjakartasans_extrabold"
                         android:textColor="@color/text_dark"
-                        android:textSize="24sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tv_primary_module_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Company name"
+                        android:fontFamily="@font/plus_jakarta_sans"
                         android:textColor="@color/text_muted"
                         android:textSize="12sp" />
 
@@ -166,6 +173,7 @@
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="0dp"
                         android:text="Active"
+                        android:fontFamily="@font/plusjakartasans_extrabold"
                         android:textStyle="bold"
                         android:textColor="@color/brand_green"
                         android:textSize="11sp" />
@@ -190,10 +198,10 @@
                         android:background="@drawable/bg_icon_circle_light">
 
                         <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="16dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_gravity="center"
-                            android:src="@android:drawable/ic_menu_sort_by_size"
+                            android:src="@drawable/database"
                             android:tint="@color/brand_green" />
                     </FrameLayout>
 
@@ -203,14 +211,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="Bio ETP"
+                        android:fontFamily="@font/plusjakartasans_extrabold"
                         android:textColor="@color/text_dark"
-                        android:textSize="24sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tv_secondary_module_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Company name"
+                        android:fontFamily="@font/plus_jakarta_sans"
                         android:textColor="@color/text_muted"
                         android:textSize="12sp" />
 
@@ -223,13 +233,17 @@
                         android:paddingHorizontal="8dp"
                         android:paddingVertical="0dp"
                         android:text="Active"
+                        android:fontFamily="@font/plusjakartasans_extrabold"
                         android:textStyle="bold"
                         android:textColor="@color/brand_green"
                         android:textSize="11sp" />
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView style="@style/SectionTitle" android:layout_marginTop="30dp" android:text="TODAY'S READINGS" />
+            <TextView style="@style/SectionTitle" android:layout_marginTop="30dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textStyle="bold"
+                android:text="TODAY'S READINGS" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -275,7 +289,12 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView style="@style/SectionTitle" android:layout_marginTop="30dp" android:text="RECENT ENTRIES" />
+            <TextView style="@style/SectionTitle"
+
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/plusjakartasans_extrabold"
+
+                android:text="RECENT ENTRIES" />
 
             <LinearLayout
                 android:layout_width="match_parent"

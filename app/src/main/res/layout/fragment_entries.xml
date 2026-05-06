@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Member Entry Wizard"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/plusjakartasans_extrabold"
                     android:textColor="@android:color/white"
                     android:textSize="22sp" />
 
@@ -42,6 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Reload"
+                    android:fontFamily="@font/plusjakartasans_extrabold"
                     android:textColor="@android:color/white"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -52,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="Loading assigned plants..."
+                android:fontFamily="@font/plus_jakarta_sans"
                 android:textColor="@color/header_label"
                 android:textSize="11sp" />
 
@@ -61,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Ready"
+                android:fontFamily="@font/plus_jakarta_sans"
                 android:textColor="@color/header_label"
                 android:textSize="11sp"
                 android:textStyle="italic" />
@@ -83,7 +86,9 @@
                 <TextView
                     style="@style/LabelText"
                     android:text="CURRENT MEMBER"
-                    android:textStyle="bold"/>
+                    android:fontFamily="@font/plusjakartasans_extrabold"
+
+                   />
 
                 <TextView
                     android:id="@+id/tv_entry_member_name"
@@ -100,6 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="Step 1 of 4"
+                    android:fontFamily="@font/plusjakartasans_extrabold"
                     android:textColor="@color/text_muted"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -115,13 +121,16 @@
 
                 <TextView
                     style="@style/SectionTitle"
-                    android:text="STEP 1 / PLANT &amp; LOCATION" />
+                    android:text="STEP 1 / PLANT &amp; LOCATION"
+                    android:fontFamily="@font/plusjakartasans_extrabold"
+                    />
 
                 <TextView
                     style="@style/LabelText"
                     android:layout_marginTop="16dp"
                     android:text="PLANT"
-                    android:textStyle="bold"/>
+                    android:fontFamily="@font/plusjakartasans_extrabold"
+                    />
 
                 <Spinner
                     android:id="@+id/spinner_plants"
@@ -133,6 +142,7 @@
                     style="@style/LabelText"
                     android:layout_marginTop="16dp"
                     android:text="LOCATION"
+                    android:fontFamily="@font/plusjakartasans_extrabold"
                     android:textStyle="bold"/>
 
                 <Spinner

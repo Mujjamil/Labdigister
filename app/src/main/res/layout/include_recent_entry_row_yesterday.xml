@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Effluent Outlet"
-            android:textStyle="bold"
+            android:fontFamily="@font/plusjakartasans_extrabold"
             android:textColor="@color/text_dark"
             android:textSize="16sp" />
         <TextView
@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Yesterday, 06:15 PM"
+            android:fontFamily="@font/plus_jakarta_sans"
             android:textColor="@color/text_muted"
             android:textSize="12sp" />
     </LinearLayout>
@@ -43,7 +44,7 @@
         android:paddingHorizontal="12dp"
         android:paddingVertical="4dp"
         android:text="Sent"
-        android:textStyle="bold"
+        android:fontFamily="@font/plusjakartasans_extrabold"
         android:textColor="@color/brand_green"
         android:textSize="11sp" />
 </LinearLayout>
