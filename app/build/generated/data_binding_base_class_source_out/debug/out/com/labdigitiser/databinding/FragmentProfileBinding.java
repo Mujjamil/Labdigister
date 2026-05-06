@@ -4,7 +4,6 @@ package com.labdigitiser.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -12,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
+import com.google.android.material.button.MaterialButton;
 import com.labdigitiser.R;
 import java.lang.NullPointerException;
 import java.lang.Override;
@@ -22,7 +22,7 @@ public final class FragmentProfileBinding implements ViewBinding {
   private final NestedScrollView rootView;
 
   @NonNull
-  public final Button buttonLogout;
+  public final MaterialButton buttonLogout;
 
   @NonNull
   public final LinearLayout layoutProfileModules;
@@ -51,12 +51,12 @@ public final class FragmentProfileBinding implements ViewBinding {
   @NonNull
   public final TextView tvProfileVersion;
 
-  private FragmentProfileBinding(@NonNull NestedScrollView rootView, @NonNull Button buttonLogout,
-      @NonNull LinearLayout layoutProfileModules, @NonNull TextView tvProfileAvatar,
-      @NonNull TextView tvProfileLocationBadge, @NonNull TextView tvProfileName,
-      @NonNull TextView tvProfilePlantBadge, @NonNull TextView tvProfilePlantDetails,
-      @NonNull TextView tvProfileRole, @NonNull TextView tvProfileVerified,
-      @NonNull TextView tvProfileVersion) {
+  private FragmentProfileBinding(@NonNull NestedScrollView rootView,
+      @NonNull MaterialButton buttonLogout, @NonNull LinearLayout layoutProfileModules,
+      @NonNull TextView tvProfileAvatar, @NonNull TextView tvProfileLocationBadge,
+      @NonNull TextView tvProfileName, @NonNull TextView tvProfilePlantBadge,
+      @NonNull TextView tvProfilePlantDetails, @NonNull TextView tvProfileRole,
+      @NonNull TextView tvProfileVerified, @NonNull TextView tvProfileVersion) {
     this.rootView = rootView;
     this.buttonLogout = buttonLogout;
     this.layoutProfileModules = layoutProfileModules;
@@ -98,7 +98,7 @@ public final class FragmentProfileBinding implements ViewBinding {
     int id;
     missingId: {
       id = R.id.button_logout;
-      Button buttonLogout = ViewBindings.findChildViewById(rootView, id);
+      MaterialButton buttonLogout = ViewBindings.findChildViewById(rootView, id);
       if (buttonLogout == null) {
         break missingId;
       }

@@ -53,9 +53,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/plus_jakarta_sans"
-            android:textStyle="bold"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/plusjakartasans_extrabold"
+            android:textStyle="normal"
             android:text="@string/app_name"
             android:textColor="@color/login_brand_mint"
             android:textSize="30sp" />
@@ -63,14 +63,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
             android:fontFamily="@font/plus_jakarta_sans"
 
             android:letterSpacing="0.04"
             android:text="@string/water_quality_monitor"
             android:textAllCaps="true"
             android:textColor="@color/login_brand_mint_muted"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
     <View
@@ -88,11 +88,13 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:fillViewport="true"
-        android:paddingTop="262dp"
+        android:paddingTop="225dp"
         app:layout_constraintBottom_toTopOf="@id/footer"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -133,11 +135,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/plus_jakarta_sans"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/plusjakartasans_extrabold"
                         android:text="@string/welcome_back"
                         android:textColor="@color/login_text_primary"
-                        android:textSize="24sp" />
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -151,13 +153,17 @@
                     <TextView
                         style="@style/LoginFieldLabel"
                         android:layout_marginTop="30dp"
-                        android:textStyle="bold"
-                        android:text="@string/username" />
+                        android:fontFamily="@font/plusjakartasans_extrabold"
+                        android:text="@string/username"
+                        android:textStyle="bold" />
 
                     <LinearLayout style="@style/LoginInputShell">
+
                         <ImageView
                             style="@style/LoginInputIcon"
-                            android:src="@drawable/ic_user_outline" />
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/user" />
+
                         <EditText
                             android:id="@+id/login_email"
                             android:layout_width="0dp"
@@ -175,17 +181,22 @@
                     <TextView
                         style="@style/LoginFieldLabel"
                         android:layout_marginTop="24dp"
-                        android:textStyle="bold"
-                        android:text="@string/password" />
+                        android:fontFamily="@font/plusjakartasans_extrabold"
+                        android:text="@string/password"
+
+                        android:textStyle="bold" />
 
                     <LinearLayout style="@style/LoginInputShell">
+
                         <ImageView
                             style="@style/LoginInputIcon"
-                            android:src="@drawable/ic_lock_outline" />
+                            android:src="@drawable/img" />
+
                         <EditText
                             android:id="@+id/login_password"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
                             android:layout_weight="1"
                             android:background="@null"
                             android:fontFamily="@font/plus_jakarta_sans"
@@ -194,6 +205,7 @@
                             android:padding="0dp"
                             android:textColor="@color/login_text_primary"
                             android:textColorHint="@color/login_hint" />
+
                         <ImageView
                             style="@style/LoginInputIcon"
                             android:layout_marginStart="8dp"
@@ -206,7 +218,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
                         android:layout_marginTop="34dp"
-                        android:fontFamily="@font/plus_jakarta_sans"
+                        android:fontFamily="@font/plusjakartasans_extrabold"
                         android:text="@string/login" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

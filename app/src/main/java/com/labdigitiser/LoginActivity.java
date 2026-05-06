@@ -3,6 +3,8 @@ package com.labdigitiser;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
     private WebsiteRepository websiteRepository;
+    private boolean isPasswordVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,23 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        bindPasswordToggle();
         binding.loginButton.setOnClickListener(v -> attemptLogin());
+    }
+
+    private void bindPasswordToggle() {
+        binding.loginPasswordToggle.setOnClickListener(v -> togglePasswordVisibility());
+    }
+
+    private void togglePasswordVisibility() {
+        isPasswordVisible = !isPasswordVisible;
+        int selection = binding.loginPassword.getSelectionEnd();
+        binding.loginPassword.setTransformationMethod(
+                isPasswordVisible
+                        ? HideReturnsTransformationMethod.getInstance()
+                        : PasswordTransformationMethod.getInstance()
+        );
+        binding.loginPassword.setSelection(Math.max(selection, 0));
     }
 
     private void attemptLogin() {

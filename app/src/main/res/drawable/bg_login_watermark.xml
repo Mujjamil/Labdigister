@@ -5,13 +5,13 @@
     android:viewportHeight="250">
     <!-- Oval from the original layer-list -->
     <path
-        android:fillColor="#203F6B3A"
-        android:pathData="M110,216c60.75,0 110,-49.25 110,-110s-49.25,-110 -110,-110s-110,49.25 -110,110s49.25,110 110,110z" />
+        android:fillColor="#143A6FAF"
+        android:pathData="M132,220c56.33,0 102,-45.67 102,-102S188.33,16 132,16S30,61.67 30,118S75.67,220 132,220z" />
 
     <!-- Arc from the original layer-list converted to path -->
     <path
         android:strokeWidth="18"
-        android:strokeColor="#660B2D1A"
+        android:strokeColor="#1A3E82FF"
         android:strokeLineCap="round"
-        android:pathData="M150,108 A60,60 0 1 1 90,48" />
+        android:pathData="M160,128 A46,46 0 1 1 114,82" />
 </vector>
